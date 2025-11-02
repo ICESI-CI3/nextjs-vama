@@ -1,0 +1,122 @@
+.container {
+  min-height: 100vh;
+  background: #f7fafc;
+}
+
+.header {
+  background: white;
+  padding: 20px 40px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h1 {
+  color: #667eea;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.userInfo span {
+  color: #2d3748;
+  font-weight: 500;
+}
+
+.logoutButton {
+  padding: 8px 16px;
+  background: #e53e3e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.logoutButton:hover {
+  background: #c53030;
+}
+
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.welcomeCard {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+}
+
+.welcomeCard h2 {
+  color: #1a202c;
+  margin-bottom: 16px;
+  font-size: 1.75rem;
+}
+
+.welcomeCard p {
+  color: #4a5568;
+  margin: 8px 0;
+  font-size: 1.1rem;
+}
+
+.welcomeCard strong {
+  color: #667eea;
+}
+
+.infoBox {
+  background: #edf2f7;
+  border-radius: 8px;
+  padding: 24px;
+  color: #4a5568;
+}
+
+.infoBox p {
+  margin: 8px 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .container {
+    background: #1a202c;
+  }
+
+  .header {
+    background: #2d3748;
+  }
+
+  .header h1 {
+    color: #90cdf4;
+  }
+
+  .userInfo span {
+    color: #e2e8f0;
+  }
+
+  .welcomeCard {
+    background: #2d3748;
+  }
+
+  .welcomeCard h2 {
+    color: #f7fafc;
+  }
+
+  .welcomeCard p {
+    color: #cbd5e0;
+  }
+
+  .infoBox {
+    background: #2d3748;
+    color: #cbd5e0;
+  }
+}
+
