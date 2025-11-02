@@ -104,7 +104,7 @@ export default function DashboardPage() {
 
         {/* Botones principales del dashboard */}
         <div className={styles.actionsGrid}>
-          <button className={styles.actionCard} onClick={() => {}}>
+          <button className={styles.actionCard} onClick={() => router.push('/play')}>
             <div className={styles.actionIcon}>🎮</div>
             <h3>Jugar Trivias</h3>
             <p>Explora y juega trivias disponibles</p>
