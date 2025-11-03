@@ -10,7 +10,7 @@ import styles from './play.module.css';
 
 export default function PlayPage() {
   const router = useRouter();
-  const { isAuthenticated, isLoading: authLoading } = useAuth();
+  const { isAuthenticated, isLoading: authLoading, refreshUser } = useAuth();
   const [step, setStep] = useState<'type-selection' | 'game-type' | 'playing' | 'completed'>('type-selection');
   const [gameType, setGameType] = useState<'own' | 'opentdb'>('own');
   const [session, setSession] = useState<GameSession | null>(null);
@@ -139,13 +139,81 @@ export default function PlayPage() {
           ...answer.correct_option,
           option_text: decodeHtmlEntities(answer.correct_option.option_text),
         } : undefined,
+        next_question: answer.next_question
       };
       setLastAnswer(decodedAnswer);
+
+      // Si hay siguiente pregunta, la precargamos
+      let nextQuestionToLoad = decodedAnswer.next_question;
       
       // Actualizar sesión - esperar un momento para asegurar que el backend haya procesado
       await new Promise(resolve => setTimeout(resolve, 500));
       const updatedSession = await gameSessionsService.getCurrentSession();
       setSession(updatedSession);
+
+      // Si hay siguiente pregunta, cargarla inmediatamente
+      if (answer.next_question) {
+        await loadQuestion(session.session_id, answer.next_question.question_number);
+      }
+
+      // Si la respuesta no trae `next_question` (es la última pregunta), intentar completar la sesión automáticamente
+      // Esto evita que el usuario vea el error de "Debes responder todas las preguntas" al pulsar "Ver Resultados".
+      try {
+        const anyAnswer: any = answer;
+        if (anyAnswer && anyAnswer.next_question === null) {
+          setLoading(true);
+          // Esperar más tiempo inicialmente para asegurar que el backend haya procesado todo
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          
+          // Refrescar la sesión varias veces hasta confirmar que está lista
+          let retryCount = 0;
+          let lastError = null;
+          while (retryCount < 5) { // Aumentar número de intentos
+            try {
+              // Esperar antes de cada intento
+              if (retryCount > 0) {
+                await new Promise(resolve => setTimeout(resolve, 2000));
+              }
+              
+              // Obtener estado más reciente
+              const freshSession = await gameSessionsService.getCurrentSession();
+              
+              // Verificar que todas las preguntas han sido respondidas
+              if (freshSession.current_question >= freshSession.total_questions) {
+                // Intentar completar con la sesión fresca
+                const completedSession = await gameSessionsService.completeSession(freshSession.session_id);
+                setSession(completedSession);
+                setStep('completed');
+                // Actualizar el estado del usuario para reflejar los nuevos puntos
+                await refreshUser();
+                return; // Éxito - salir
+              } else {
+                // Si aún no se han respondido todas las preguntas, esperar más
+                retryCount++;
+                continue;
+              }
+            } catch (err: any) {
+              lastError = err;
+              const errorMessage = err.response?.data?.message || 'Error al completar la sesión';
+              
+              if (errorMessage.includes('responder todas') && retryCount < 4) {
+                retryCount++;
+                continue;
+              } else {
+                throw err;
+              }
+            }
+          }
+          
+          // Si llegamos aquí, todos los intentos fallaron
+          throw lastError || new Error('No se pudo completar la sesión después de varios intentos');
+        }
+      } catch (completeErr: any) {
+        // Si falla la finalización automática, mostrar el error; el usuario podrá reintentar con el botón
+        setError(completeErr.response?.data?.message || 'Error al completar la sesión automáticamente');
+      } finally {
+        setLoading(false);
+      }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Error al enviar la respuesta');
     } finally {
@@ -279,31 +347,52 @@ export default function PlayPage() {
                     try {
                       setLoading(true);
                       setError('');
-                      // Refrescar la sesión antes de completar para asegurar que todo está sincronizado
-                      const refreshedSession = await gameSessionsService.getCurrentSession();
-                      setSession(refreshedSession);
-                      // Intentar completar
-                      const completedSession = await gameSessionsService.completeSession(session.session_id);
-                      setSession(completedSession);
-                      setStep('completed');
+                      
+                      // Sistema de reintentos para completar la sesión
+                      let retryCount = 0;
+                      let lastError = null;
+                      
+                      while (retryCount < 5) { // Aumentar el número de intentos
+                        try {
+                          // Esperar más tiempo antes de cada intento para permitir la sincronización
+                          await new Promise(resolve => setTimeout(resolve, 2000));
+                          
+                          // Obtener estado más reciente
+                          const freshSession = await gameSessionsService.getCurrentSession();
+                          setSession(freshSession);
+                          
+                          // Verificar que todas las preguntas han sido respondidas
+                          if (freshSession.current_question >= freshSession.total_questions) {
+                            // Intentar completar con la sesión fresca
+                            const completedSession = await gameSessionsService.completeSession(freshSession.session_id);
+                            setSession(completedSession);
+                            setStep('completed');
+                            return; // Éxito - salir
+                          } else {
+                            // Si aún no se han respondido todas las preguntas, esperar más
+                            retryCount++;
+                            continue;
+                          }
+                        } catch (err: any) {
+                          lastError = err;
+                          const errorMessage = err.response?.data?.message || 'Error al completar la sesión';
+                          
+                          if (errorMessage.includes('responder todas') && retryCount < 4) {
+                            retryCount++;
+                            continue;
+                          }
+                          
+                          // Si no es error de sincronización o es el último intento, lanzar
+                          throw err;
+                        }
+                      }
+                      
+                      // Si llegamos aquí, todos los intentos fallaron
+                      throw lastError || new Error('No se pudo completar la sesión después de varios intentos');
+                      
                     } catch (err: any) {
                       const errorMessage = err.response?.data?.message || 'Error al completar la sesión';
                       setError(errorMessage);
-                      // Si el error es que faltan respuestas, intentar refrescar y verificar
-                      if (errorMessage.includes('responder todas')) {
-                        setTimeout(async () => {
-                          try {
-                            const refreshedSession = await gameSessionsService.getCurrentSession();
-                            setSession(refreshedSession);
-                            // Intentar nuevamente después de un breve delay
-                            const completedSession = await gameSessionsService.completeSession(session.session_id);
-                            setSession(completedSession);
-                            setStep('completed');
-                          } catch (retryErr: any) {
-                            setError(retryErr.response?.data?.message || 'Error al completar la sesión');
-                          }
-                        }, 1000);
-                      }
                     } finally {
                       setLoading(false);
                     }
@@ -487,6 +576,20 @@ function OpenTDBSelection({
     difficulty: 'medium' as 'easy' | 'medium' | 'hard',
     type: 'multiple' as 'multiple' | 'boolean',
   });
+  // Estado separado para manejar el input temporal
+  const [tempAmount, setTempAmount] = useState<string>('10');
+
+  // Añadir validación antes de crear y empezar
+  const validateForm = () => {
+    const numAmount = parseInt(tempAmount);
+    if (isNaN(numAmount) || numAmount < 1) {
+      alert('Por favor, ingresa un número válido de preguntas (mínimo 1)');
+      return false;
+    }
+    // Asegurarse de que formData tenga el valor correcto antes de proceder
+    setFormData(prev => ({ ...prev, amount: numAmount }));
+    return true;
+  };
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [creating, setCreating] = useState(false);
 
@@ -508,6 +611,11 @@ function OpenTDBSelection({
   };
 
   const handleCreateAndStart = async () => {
+    // Validar el formulario antes de proceder
+    if (!validateForm()) {
+      return;
+    }
+
     try {
       setCreating(true);
       const { externalApiService } = await import('@/services/external-api.service');
@@ -591,8 +699,22 @@ function OpenTDBSelection({
             type="number"
             min="1"
             max="50"
-            value={formData.amount}
-            onChange={(e) => setFormData({ ...formData, amount: parseInt(e.target.value) || 10 })}
+            value={tempAmount}
+            onChange={(e) => {
+              const value = e.target.value;
+              setTempAmount(value);
+              // Solo actualizar formData si hay un número válido
+              if (value !== '' && !isNaN(parseInt(value))) {
+                setFormData({ ...formData, amount: Math.max(1, parseInt(value)) });
+              }
+            }}
+            onBlur={() => {
+              // Al perder el foco, asegurar que haya un valor válido
+              if (tempAmount === '' || isNaN(parseInt(tempAmount))) {
+                setTempAmount('1');
+                setFormData({ ...formData, amount: 1 });
+              }
+            }}
           />
         </div>
 

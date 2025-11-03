@@ -82,6 +82,10 @@ export interface AnswerResponse {
     option_id: string;
     option_text: string;
   };
+  next_question?: {
+    question_id: string;
+    question_number: number;
+  };
 }
 
 // OpenTDB Types
