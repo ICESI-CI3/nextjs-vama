@@ -174,6 +174,87 @@
   color: #64748b;
 }
 
+/* Diálogo de sesión activa */
+.activeSessionDialog {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 40px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.activeSessionDialog h2 {
+  color: #1a202c;
+  margin-bottom: 20px;
+}
+
+.activeSessionDialog p {
+  color: #4a5568;
+  margin-bottom: 30px;
+}
+
+.dialogButtons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.continueSessionButton {
+  padding: 12px 24px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.continueSessionButton:hover:not(:disabled) {
+  background: #5a67d8;
+}
+
+.newGameButton {
+  padding: 12px 24px;
+  background: #edf2f7;
+  color: #4a5568;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.newGameButton:hover:not(:disabled) {
+  background: #e2e8f0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .activeSessionDialog {
+    background: #2d3748;
+  }
+
+  .activeSessionDialog h2 {
+    color: #f7fafc;
+  }
+
+  .activeSessionDialog p {
+    color: #e2e8f0;
+  }
+
+  .newGameButton {
+    background: #4a5568;
+    color: #e2e8f0;
+    border-color: #2d3748;
+  }
+
+  .newGameButton:hover:not(:disabled) {
+    background: #3a4558;
+  }
+}
+
 /* Formulario OpenTDB */
 .opentdbForm {
   background: white;
@@ -260,7 +341,7 @@
 .progress span {
   display: block;
   margin-bottom: 8px;
-  color: #475569;
+  color: #f7fafc;
   font-weight: 500;
 }
 
@@ -281,7 +362,7 @@
 .gameStats {
   display: flex;
   gap: 24px;
-  color: #475569;
+  color: #f7fafc;
   font-weight: 500;
 }
 
@@ -300,6 +381,45 @@
 }
 
 .abandonButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.saveExitButton {
+  padding: 8px 16px;
+  background: #edf2f7;
+  color: #4a5568;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-right: 12px;
+}
+
+.saveExitButton:hover:not(:disabled) {
+  background: #e2e8f0;
+}
+
+.saveExitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.continueButton {
+  padding: 8px 16px;
+  background: #ebf4ff;
+  color: #3182ce;
+  border: 1px solid #bee3f8;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.continueButton:hover:not(:disabled) {
+  background: #e3efff;
+}
+
+.continueButton:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
@@ -578,10 +698,42 @@
     color: #f7fafc;
   }
 
+  .option:hover:not(:disabled) {
+    background: #3a4558;
+    border-color: #90cdf4;
+  }
+
+  .option.selected {
+    background: #3a4558;
+    border-color: #90cdf4;
+  }
+
   .points,
   .timer {
     background: #1a202c;
     color: #cbd5e0;
+  }
+
+  .saveExitButton {
+    background: #2d3748;
+    color: #e2e8f0;
+    border-color: #4a5568;
+  }
+
+  .saveExitButton:hover:not(:disabled) {
+    background: #3a4558;
+    color: #e2e8f0;
+  }
+
+  .continueButton {
+    background: #2c5282;
+    color: #bee3f8;
+    border-color: #2a4365;
+  }
+
+  .continueButton:hover:not(:disabled) {
+    background: #2b4c7e;
+    color: #bee3f8;
   }
 }
 

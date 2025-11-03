@@ -11,7 +11,7 @@ import styles from './play.module.css';
 export default function PlayPage() {
   const router = useRouter();
   const { isAuthenticated, isLoading: authLoading, refreshUser } = useAuth();
-  const [step, setStep] = useState<'type-selection' | 'game-type' | 'playing' | 'completed'>('type-selection');
+  const [step, setStep] = useState<'type-selection' | 'game-type' | 'playing' | 'completed' | 'session-dialog'>('type-selection');
   const [gameType, setGameType] = useState<'own' | 'opentdb'>('own');
   const [session, setSession] = useState<GameSession | null>(null);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
@@ -20,6 +20,7 @@ export default function PlayPage() {
   const [lastAnswer, setLastAnswer] = useState<AnswerResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [activeSession, setActiveSession] = useState<GameSession | null>(null);
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
@@ -47,15 +48,51 @@ export default function PlayPage() {
 
   const checkActiveSession = async () => {
     try {
-      const activeSession = await gameSessionsService.getCurrentSession();
+      const currentSession = await gameSessionsService.getCurrentSession();
+      if (currentSession) {
+        setActiveSession(currentSession);
+        setStep('session-dialog');
+      }
+    } catch (err) {
+      // No hay sesión activa, continuar con selección
+      setStep('type-selection');
+    }
+  };
+
+  const continueActiveSession = async () => {
+    if (!activeSession) return;
+    try {
+      setLoading(true);
       setSession(activeSession);
       setStep('playing');
       // Cargar la pregunta actual
       if (activeSession.current_question > 0) {
-        loadQuestion(activeSession.session_id, activeSession.current_question);
+        await loadQuestion(activeSession.session_id, activeSession.current_question);
       }
-    } catch (err) {
-      // No hay sesión activa, continuar con selección
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Error al cargar la sesión activa');
+      setStep('type-selection');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const startNewGame = async () => {
+    if (activeSession) {
+      if (confirm('¿Estás seguro de que quieres abandonar la trivia en progreso? Perderás tu progreso actual.')) {
+        try {
+          setLoading(true);
+          await gameSessionsService.abandonSession(activeSession.session_id);
+          setActiveSession(null);
+          setStep('type-selection');
+        } catch (err: any) {
+          setError(err.response?.data?.message || 'Error al abandonar la sesión activa');
+        } finally {
+          setLoading(false);
+        }
+      }
+    } else {
+      setStep('type-selection');
     }
   };
 
@@ -270,6 +307,32 @@ export default function PlayPage() {
         </div>
       )}
 
+      {step === 'session-dialog' && activeSession && (
+        <div className={styles.activeSessionDialog}>
+          <h2>Tienes una trivia en progreso</h2>
+          <p>
+            Has completado {activeSession.correct_answers} de {activeSession.total_questions} preguntas.
+            ¿Deseas continuar esta trivia o empezar una nueva?
+          </p>
+          <div className={styles.dialogButtons}>
+            <button
+              onClick={continueActiveSession}
+              className={styles.continueSessionButton}
+              disabled={loading}
+            >
+              Continuar Trivia
+            </button>
+            <button
+              onClick={startNewGame}
+              className={styles.newGameButton}
+              disabled={loading}
+            >
+              Nueva Trivia
+            </button>
+          </div>
+        </div>
+      )}
+
       {step === 'type-selection' && (
         <div className={styles.selectionScreen}>
           <h2>Elige el tipo de trivia</h2>
@@ -325,9 +388,22 @@ export default function PlayPage() {
               <span>Puntos: {session.total_score}</span>
               <span>Correctas: {session.correct_answers}</span>
             </div>
-            <button onClick={handleAbandon} className={styles.abandonButton} disabled={loading}>
-              Abandonar
-            </button>
+            <div className={styles.gameActions}>
+              <button 
+                onClick={() => {
+                  if (confirm('¿Deseas guardar tu progreso y salir? Podrás continuar esta trivia más tarde.')) {
+                    router.push('/dashboard');
+                  }
+                }} 
+                className={styles.saveExitButton} 
+                disabled={loading}
+              >
+                Guardar y Salir
+              </button>
+              <button onClick={handleAbandon} className={styles.abandonButton} disabled={loading}>
+                Abandonar
+              </button>
+            </div>
           </div>
 
           {lastAnswer ? (
