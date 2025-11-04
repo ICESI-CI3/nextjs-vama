@@ -16,14 +16,14 @@
 
 .header h1 {
   color: #667eea;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 700;
 }
 
 .userInfo {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 }
 
 .userInfo span {
@@ -148,17 +148,19 @@
 
 .topCard {
   background: white;
+  border: 2px solid #e2e8f0;
   border-radius: 12px;
   padding: 24px 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   text-align: center;
   position: relative;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .topCard:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(102, 126, 234, 0.15);
+  box-shadow: 0 8px 16px rgba(102, 126, 234, 0.2);
+  border-color: #667eea;
 }
 
 .rankBadge {
@@ -208,10 +210,10 @@
 
 .userCard {
   background: white;
+  border: 2px solid #e2e8f0;
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-  transition: background 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .userCard h3 {
@@ -258,9 +260,19 @@
 /* Lista general */
 .listSection {
   background: white;
+  border: 2px solid #e2e8f0;
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.noPlayers {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  color: #64748b;
 }
 
 .listHeader {
@@ -340,7 +352,7 @@
   }
 }
 
-/* 🌙 Modo oscuro */
+/* Dark mode */
 @media (prefers-color-scheme: dark) {
   .container {
     background: #1a202c;
@@ -348,7 +360,6 @@
 
   .header {
     background: #2d3748;
-    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
   }
 
   .header h1 {
@@ -360,60 +371,104 @@
   }
 
   .selectWrap label {
-    color: #cbd5e0;
+    color: #e2e8f0;
   }
 
   .selectWrap select {
-    background: #2d3748;
-    color: #edf2f7;
+    background: #1a202c;
     border-color: #4a5568;
-  }
-
-  .meta {
-    color: #a0aec0;
-  }
-
-  .refreshButton {
-    background: #2d3748;
-    color: #edf2f7;
-    border-color: #4a5568;
-  }
-
-  .error {
-    background: #442727;
-    border-color: #742a2a;
-    color: #feb2b2;
-  }
-
-  .topCard,
-  .userCard,
-  .listSection {
-    background: #2d3748;
-    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.05);
-  }
-
-  .topLeft h2,
-  .topCard h3,
-  .userCard h3,
-  .playerName,
-  .scoreCol {
     color: #f7fafc;
   }
 
-  .statLabel,
-  .categoryList,
-  .smallMuted,
+  .selectWrap select:focus {
+    border-color: #667eea;
+  }
+
+  .meta {
+    color: #cbd5e0;
+  }
+
+  .refreshButton {
+    background: #4a5568;
+    color: #e2e8f0;
+    border-color: #2d3748;
+  }
+
+  .refreshButton:hover {
+    background: #3a4558;
+  }
+
+  .topLeft h2 {
+    color: #f7fafc;
+  }
+
+  .topCard {
+    background: #2d3748;
+    border-color: #4a5568;
+  }
+
+  .topCard:hover {
+    border-color: #667eea;
+    box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+  }
+
+  .topCard h3 {
+    color: #f7fafc;
+  }
+
+  .score {
+    color: #90cdf4;
+  }
+
+  .userCard {
+    background: #2d3748;
+    border-color: #4a5568;
+  }
+
+  .userCard h3 {
+    color: #f7fafc;
+  }
+
   .stats {
     color: #cbd5e0;
   }
 
-  .rankingItem:hover {
-    background: #3a4458;
+  .categoryList {
+    color: #cbd5e0;
   }
 
-  .avatar,
-  .avatarSmall,
-  .avatarLarge {
+  .smallMuted {
+    color: #a0aec0;
+  }
+
+  .listSection {
+    background: #2d3748;
     border-color: #4a5568;
+  }
+
+  .listHeader {
+    color: #cbd5e0;
+  }
+
+  .rankingItem {
+    border-bottom-color: #4a5568;
+  }
+
+  .rankingItem:hover {
+    background: #1a202c;
+  }
+
+  .playerName {
+    color: #f7fafc;
+  }
+
+  .scoreCol {
+    color: #f7fafc;
+  }
+
+  .noPlayers {
+    background: #2d3748;
+    border-color: #4a5568;
+    color: #cbd5e0;
   }
 }
