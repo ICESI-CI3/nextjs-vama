@@ -1,6 +1,7 @@
 .container {
   min-height: 100vh;
   background: #f7fafc;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .header {
@@ -10,6 +11,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .header h1 {
@@ -85,7 +87,7 @@
   border-radius: 6px;
   border: 2px solid #e2e8f0;
   font-size: 0.95rem;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, background 0.3s, color 0.3s;
 }
 
 .selectWrap select:focus {
@@ -115,7 +117,6 @@
 .refreshButton:hover {
   background: #e2e8f0;
 }
-
 
 .error {
   background: #fee;
@@ -152,7 +153,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   text-align: center;
   position: relative;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
 }
 
 .topCard:hover {
@@ -192,7 +193,7 @@
   font-weight: 600;
 }
 
-/*podio */
+/* Podio */
 .place1 {
   border: 2px solid gold;
 }
@@ -205,12 +206,12 @@
   border: 2px solid #cd7f32;
 }
 
-
 .userCard {
   background: white;
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: background 0.3s ease;
 }
 
 .userCard h3 {
@@ -283,7 +284,7 @@
   padding: 12px 0;
   border-bottom: 1px solid #e2e8f0;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, color 0.2s;
 }
 
 .rankingItem:hover {
@@ -324,7 +325,6 @@
   font-weight: 600;
 }
 
-
 @media (max-width: 768px) {
   .topSection {
     grid-template-columns: 1fr;
@@ -337,5 +337,83 @@
 
   .desktopOnly {
     display: none;
+  }
+}
+
+/* 🌙 Modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .container {
+    background: #1a202c;
+  }
+
+  .header {
+    background: #2d3748;
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+  }
+
+  .header h1 {
+    color: #90cdf4;
+  }
+
+  .userInfo span {
+    color: #e2e8f0;
+  }
+
+  .selectWrap label {
+    color: #cbd5e0;
+  }
+
+  .selectWrap select {
+    background: #2d3748;
+    color: #edf2f7;
+    border-color: #4a5568;
+  }
+
+  .meta {
+    color: #a0aec0;
+  }
+
+  .refreshButton {
+    background: #2d3748;
+    color: #edf2f7;
+    border-color: #4a5568;
+  }
+
+  .error {
+    background: #442727;
+    border-color: #742a2a;
+    color: #feb2b2;
+  }
+
+  .topCard,
+  .userCard,
+  .listSection {
+    background: #2d3748;
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.05);
+  }
+
+  .topLeft h2,
+  .topCard h3,
+  .userCard h3,
+  .playerName,
+  .scoreCol {
+    color: #f7fafc;
+  }
+
+  .statLabel,
+  .categoryList,
+  .smallMuted,
+  .stats {
+    color: #cbd5e0;
+  }
+
+  .rankingItem:hover {
+    background: #3a4458;
+  }
+
+  .avatar,
+  .avatarSmall,
+  .avatarLarge {
+    border-color: #4a5568;
   }
 }
