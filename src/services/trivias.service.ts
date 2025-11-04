@@ -8,6 +8,7 @@ export interface CreateTriviaDto {
   status?: 'published' | 'draft' | 'archived';
   is_public?: boolean;
   time_limit_seconds?: number;
+  source?: 'custom' | 'opentdb';
 }
 
 export interface UpdateTriviaDto {
@@ -27,6 +28,7 @@ class TriviasService {
     status?: 'published' | 'draft' | 'archived';
     difficulty_level?: 'easy' | 'medium' | 'hard';
     category_id?: string;
+    is_public?: boolean;
   }): Promise<Trivia[]> {
     const response = await apiClient.get('/trivias', { params: filters });
     return response.data;

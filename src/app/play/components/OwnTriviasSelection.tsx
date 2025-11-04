@@ -28,7 +28,11 @@ export function OwnTriviasSelection({
     try {
       setLoadingTrivias(true);
       const { triviasService } = await import('@/services/trivias.service');
-      const data = await triviasService.getTrivias({ status: 'published' });
+      // Filtrar solo trivias publicadas Y públicas (excluye las de OpenTDB que son privadas)
+      const data = await triviasService.getTrivias({ 
+        status: 'published',
+        is_public: true 
+      });
       setTrivias(data);
     } catch (err) {
       console.error('Error loading trivias:', err);

@@ -85,13 +85,14 @@ export function OpenTDBSelection({
         lang: formData.lang, // 🌐 Idioma para traducción
       });
 
-      // Crear trivia temporal
+      // Crear trivia de OpenTDB (no editable, privada, solo para esta sesión)
       const trivia = await triviasService.createTrivia({
         title: `OpenTDB Quiz - ${formData.difficulty}`,
         category_id: defaultCategory.id,
         difficulty_level: formData.difficulty,
         status: 'published',
-        is_public: true,
+        is_public: false, // Privada: no aparece en "Jugar → Trivias Propias"
+        source: 'opentdb', // Marcada como de OpenTDB para filtrarla en "Mis Trivias"
       });
 
       // Convertir y crear preguntas
