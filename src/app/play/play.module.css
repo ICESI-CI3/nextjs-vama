@@ -76,8 +76,16 @@
 
 .typeButtons {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 24px;
+  justify-items: center;
+}
+
+/* Botón centrado en la parte inferior (cono) */
+.typeButtonCenter {
+  grid-column: 1 / -1;
+  max-width: 400px;
+  justify-self: center;
 }
 
 .typeButton {
@@ -168,10 +176,102 @@
   font-size: 0.9rem;
 }
 
+.sessionDate {
+  color: #94a3b8 !important;
+  font-size: 0.85rem !important;
+  font-style: italic;
+  margin-top: 8px !important;
+}
+
 .empty {
   text-align: center;
   padding: 40px;
   color: #64748b;
+}
+
+/* Paginación */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+.paginationButton {
+  padding: 10px 20px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+  font-size: 0.95rem;
+}
+
+.paginationButton:hover:not(:disabled) {
+  background: #5568d3;
+}
+
+.paginationButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #cbd5e0;
+}
+
+.paginationNumbers {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.paginationNumber {
+  padding: 8px 14px;
+  background: white;
+  color: #2d3748;
+  border: 2px solid #e2e8f0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+  font-size: 0.95rem;
+  min-width: 40px;
+}
+
+.paginationNumber:hover:not(:disabled) {
+  border-color: #667eea;
+  background: #f7faff;
+}
+
+.paginationNumber:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.paginationNumberActive {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+.paginationNumberActive:hover:not(:disabled) {
+  background: #5568d3;
+  border-color: #5568d3;
+}
+
+.paginationEllipsis {
+  padding: 8px 4px;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.paginationInfo {
+  text-align: center;
+  margin-top: 16px;
+  color: #64748b;
+  font-size: 0.9rem;
 }
 
 /* Diálogo de sesión activa */
@@ -735,12 +835,69 @@
     background: #2b4c7e;
     color: #bee3f8;
   }
+
+  .paginationButton {
+    background: #4a5568;
+    color: #e2e8f0;
+  }
+
+  .paginationButton:hover:not(:disabled) {
+    background: #3a4558;
+  }
+
+  .paginationButton:disabled {
+    background: #2d3748;
+    color: #64748b;
+  }
+
+  .paginationNumber {
+    background: #2d3748;
+    color: #e2e8f0;
+    border-color: #4a5568;
+  }
+
+  .paginationNumber:hover:not(:disabled) {
+    background: #3a4558;
+    border-color: #667eea;
+  }
+
+  .paginationNumberActive {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+  }
+
+  .paginationNumberActive:hover:not(:disabled) {
+    background: #5568d3;
+    border-color: #5568d3;
+  }
+
+  .paginationEllipsis {
+    color: #a0aec0;
+  }
+
+  .paginationInfo {
+    color: #cbd5e0;
+  }
+
+  .sessionDate {
+    color: #718096 !important;
+  }
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   .header {
     padding: 16px 20px;
+  }
+
+  .typeButtons {
+    grid-template-columns: 1fr;
+  }
+
+  .typeButtonCenter {
+    grid-column: 1;
+    max-width: 100%;
   }
 
   .gameHeader {
@@ -766,6 +923,21 @@
 
   .resultsActions button {
     width: 100%;
+  }
+
+  .pagination {
+    gap: 8px;
+  }
+
+  .paginationButton {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+  }
+
+  .paginationNumber {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    min-width: 35px;
   }
 }
 

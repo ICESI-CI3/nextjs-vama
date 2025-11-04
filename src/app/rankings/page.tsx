@@ -215,7 +215,7 @@ export default function RankingsPage() {
               <small>Última actualización: {new Date(lastUpdated).toLocaleString()}</small>
             )}
             <button onClick={fetchAll} className={styles.refreshButton}>
-              🔄 Refrescar
+               Refrescar
             </button>
           </div>
         </div>

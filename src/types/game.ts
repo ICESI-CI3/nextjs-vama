@@ -86,6 +86,12 @@ export interface AnswerResponse {
     question_id: string;
     question_number: number;
   };
+  session_progress?: {
+    current_question: number;
+    total_questions: number;
+    correct_answers: number;
+    total_score: number;
+  };
 }
 
 // OpenTDB Types
