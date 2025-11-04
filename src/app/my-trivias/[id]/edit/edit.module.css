@@ -1,0 +1,514 @@
+.container {
+  min-height: 100vh;
+  background: #f7fafc;
+}
+
+.header {
+  background: white;
+  padding: 20px 40px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header h1 {
+  color: #667eea;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.backButton {
+  padding: 8px 16px;
+  background: #e2e8f0;
+  color: #475569;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.backButton:hover {
+  background: #cbd5e0;
+}
+
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 20px;
+}
+
+/* Loading y errores */
+.loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  color: #64748b;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #e2e8f0;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error {
+  color: #c33;
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 1.2rem;
+}
+
+.errorAlert {
+  background: #fee;
+  border: 1px solid #fcc;
+  color: #c33;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.errorAlert button {
+  background: none;
+  border: none;
+  color: #c33;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0 8px;
+  font-weight: bold;
+}
+
+/* Secciones */
+.section {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.sectionHeader {
+  padding: 24px 32px;
+  border-bottom: 2px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+}
+
+.sectionHeader h2 {
+  margin: 0;
+  color: #1a202c;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.editButton,
+.addButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.editButton {
+  background: #667eea;
+  color: white;
+}
+
+.editButton:hover {
+  background: #5568d3;
+  transform: translateY(-1px);
+}
+
+.addButton {
+  background: #10b981;
+  color: white;
+}
+
+.addButton:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.addButtonLarge {
+  padding: 14px 32px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.2s;
+  margin-top: 20px;
+}
+
+.addButtonLarge:hover {
+  background: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
+}
+
+.editActions {
+  display: flex;
+  gap: 8px;
+}
+
+.cancelButton,
+.saveButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.cancelButton {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.cancelButton:hover:not(:disabled) {
+  background: #cbd5e0;
+}
+
+.saveButton {
+  background: #10b981;
+  color: white;
+}
+
+.saveButton:hover:not(:disabled) {
+  background: #059669;
+}
+
+.cancelButton:disabled,
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Info de la trivia */
+.triviaInfo {
+  padding: 32px;
+}
+
+.infoRow {
+  display: flex;
+  padding: 16px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.infoRow:last-child {
+  border-bottom: none;
+}
+
+.infoLabel {
+  font-weight: 600;
+  color: #64748b;
+  width: 150px;
+  flex-shrink: 0;
+}
+
+.infoValue {
+  color: #1a202c;
+  font-weight: 500;
+}
+
+/* Formulario de edición */
+.editForm {
+  display: grid;
+  gap: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formGroup label {
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 0.95rem;
+}
+
+.formGroup input,
+.formGroup select {
+  padding: 10px 14px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.formGroup input:disabled,
+.formGroup select:disabled {
+  background-color: #f7fafc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.checkboxGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.checkboxGroup label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 12px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.checkboxGroup label:hover {
+  background: #f7fafc;
+}
+
+.checkboxGroup input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.checkboxGroup span {
+  font-weight: 500;
+  color: #2d3748;
+}
+
+/* Lista de preguntas */
+.questionsList {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.emptyQuestions {
+  padding: 80px 40px;
+  text-align: center;
+}
+
+.emptyIcon {
+  font-size: 5rem;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.emptyQuestions h3 {
+  color: #1a202c;
+  font-size: 1.5rem;
+  margin: 0 0 12px 0;
+  font-weight: 600;
+}
+
+.emptyQuestions p {
+  color: #64748b;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header {
+    padding: 16px 20px;
+  }
+
+  .headerLeft {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .header h1 {
+    font-size: 1.5rem;
+  }
+
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px 24px;
+  }
+
+  .sectionHeader h2 {
+    font-size: 1.25rem;
+  }
+
+  .editButton,
+  .addButton {
+    width: 100%;
+  }
+
+  .editActions {
+    width: 100%;
+  }
+
+  .cancelButton,
+  .saveButton {
+    flex: 1;
+  }
+
+  .triviaInfo {
+    padding: 24px 20px;
+  }
+
+  .infoRow {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .infoLabel {
+    width: auto;
+  }
+
+  .questionsList {
+    padding: 20px;
+  }
+
+  .emptyQuestions {
+    padding: 60px 24px;
+  }
+
+  .emptyIcon {
+    font-size: 4rem;
+  }
+}
+
+/* Modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .container {
+    background: #1a202c;
+  }
+
+  .header,
+  .section {
+    background: #2d3748;
+  }
+
+  .header h1 {
+    color: #90cdf4;
+  }
+
+  .backButton {
+    background: #4a5568;
+    color: #e2e8f0;
+  }
+
+  .backButton:hover {
+    background: #3a4558;
+  }
+
+  .sectionHeader {
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+    border-bottom-color: #4a5568;
+  }
+
+  .sectionHeader h2 {
+    color: #f7fafc;
+  }
+
+  .infoRow {
+    border-bottom-color: #4a5568;
+  }
+
+  .infoLabel {
+    color: #cbd5e0;
+  }
+
+  .infoValue {
+    color: #f7fafc;
+  }
+
+  .formGroup label {
+    color: #e2e8f0;
+  }
+
+  .formGroup input,
+  .formGroup select {
+    background: #1a202c;
+    border-color: #4a5568;
+    color: #f7fafc;
+  }
+
+  .formGroup input:disabled,
+  .formGroup select:disabled {
+    background-color: #1a202c;
+  }
+
+  .checkboxGroup label:hover {
+    background: #1a202c;
+  }
+
+  .checkboxGroup span {
+    color: #e2e8f0;
+  }
+
+  .cancelButton {
+    background: #4a5568;
+    color: #e2e8f0;
+  }
+
+  .cancelButton:hover:not(:disabled) {
+    background: #3a4558;
+  }
+
+  .emptyQuestions h3 {
+    color: #f7fafc;
+  }
+
+  .emptyQuestions p {
+    color: #cbd5e0;
+  }
+
+  .loading {
+    color: #cbd5e0;
+  }
+
+  .spinner {
+    border-color: #4a5568;
+    border-top-color: #90cdf4;
+  }
+}
+

@@ -1,0 +1,241 @@
+.card {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.card:hover {
+  border-color: #667eea;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+}
+
+.cardHeader {
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: white;
+}
+
+.questionNumber {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.questionType {
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.points {
+  margin-left: auto;
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.cardBody {
+  padding: 24px;
+}
+
+.questionText {
+  color: #1a202c;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: #f7fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.correctOption {
+  background: #f0fdf4;
+  border-color: #10b981;
+}
+
+.optionLetter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #667eea;
+  color: white;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.correctOption .optionLetter {
+  background: #10b981;
+}
+
+.optionText {
+  flex: 1;
+  color: #2d3748;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.correctBadge {
+  padding: 4px 12px;
+  background: #10b981;
+  color: white;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.noOptions {
+  color: #64748b;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+
+.cardActions {
+  padding: 16px 20px;
+  background: #f7fafc;
+  border-top: 2px solid #e2e8f0;
+  display: flex;
+  gap: 12px;
+}
+
+.editButton,
+.deleteButton {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.editButton {
+  background: #667eea;
+  color: white;
+}
+
+.editButton:hover {
+  background: #5568d3;
+  transform: translateY(-1px);
+}
+
+.deleteButton {
+  background: #e53e3e;
+  color: white;
+}
+
+.deleteButton:hover {
+  background: #c53030;
+  transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cardHeader {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .questionNumber {
+    width: 100%;
+  }
+
+  .cardBody {
+    padding: 20px;
+  }
+
+  .questionText {
+    font-size: 1rem;
+  }
+
+  .option {
+    padding: 12px 14px;
+  }
+
+  .optionLetter {
+    width: 28px;
+    height: 28px;
+    font-size: 0.85rem;
+  }
+
+  .optionText {
+    font-size: 0.9rem;
+  }
+
+  .cardActions {
+    flex-direction: column;
+  }
+
+  .editButton,
+  .deleteButton {
+    width: 100%;
+  }
+}
+
+/* Modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .card {
+    background: #2d3748;
+    border-color: #4a5568;
+  }
+
+  .card:hover {
+    border-color: #667eea;
+  }
+
+  .questionText {
+    color: #f7fafc;
+  }
+
+  .option {
+    background: #1a202c;
+    border-color: #4a5568;
+  }
+
+  .correctOption {
+    background: rgba(16, 185, 129, 0.1);
+  }
+
+  .optionText {
+    color: #e2e8f0;
+  }
+
+  .cardActions {
+    background: #1a202c;
+    border-top-color: #4a5568;
+  }
+
+  .noOptions {
+    color: #cbd5e0;
+  }
+}
+
