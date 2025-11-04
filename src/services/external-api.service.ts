@@ -19,7 +19,13 @@ class ExternalApiService {
    * Obtener preguntas de OpenTDB
    */
   async fetchQuestions(params: FetchQuestionsDto): Promise<OpenTDBResponse> {
-    const response = await apiClient.get('/external-api/questions', { params });
+    // El idioma ahora se especifica en cada llamada, pero mantenemos español como fallback
+    const paramsWithLang = {
+      ...params,
+      lang: params.lang || 'es', // 🌐 Español por defecto si no se especifica
+    };
+    
+    const response = await apiClient.get('/external-api/questions', { params: paramsWithLang });
     return response.data;
   }
 
