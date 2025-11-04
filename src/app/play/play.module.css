@@ -391,6 +391,19 @@
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
+.formActions {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  margin-top: 24px;
+  align-items: center;
+}
+
+.formActions .startButton {
+  width: auto;
+  min-width: 160px;
+}
+
 .startButton {
   width: 100%;
   padding: 14px;
@@ -922,6 +935,20 @@
   }
 
   .resultsActions button {
+    width: 100%;
+  }
+
+  .formActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .formActions .startButton {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .formActions .backButton {
     width: 100%;
   }
 

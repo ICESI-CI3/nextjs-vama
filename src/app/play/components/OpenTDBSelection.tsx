@@ -113,9 +113,6 @@ export function OpenTDBSelection({
 
   return (
     <div className={styles.gameTypeSelection}>
-      <button onClick={onBack} className={styles.backButton}>
-        ← Atrás
-      </button>
       <h2>Configuración de OpenTDB</h2>
       <div className={styles.opentdbForm}>
         <div className={styles.formGroup}>
@@ -203,13 +200,22 @@ export function OpenTDBSelection({
           </small>
         </div>
 
-        <button
-          onClick={handleCreateAndStart}
-          className={styles.startButton}
-          disabled={loading || creating}
-        >
-          {creating ? 'Creando trivia...' : 'Iniciar Juego'}
-        </button>
+        <div className={styles.formActions}>
+          <button
+            onClick={onBack}
+            className={styles.backButton}
+            disabled={loading || creating}
+          >
+            ← Atrás
+          </button>
+          <button
+            onClick={handleCreateAndStart}
+            className={styles.startButton}
+            disabled={loading || creating}
+          >
+            {creating ? 'Creando trivia...' : 'Iniciar Juego'}
+          </button>
+        </div>
       </div>
     </div>
   );

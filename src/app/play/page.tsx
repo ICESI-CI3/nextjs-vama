@@ -62,7 +62,7 @@ export default function PlayPage() {
       <header className={styles.header}>
         <h1>TriviaTime</h1>
         <button onClick={() => router.push('/dashboard')} className={styles.backButton}>
-          ← Volver
+          ← Volver al Dashboard
         </button>
       </header>
 
