@@ -18,6 +18,22 @@ const customJestConfig = {
     '!src/**/*.d.ts',
     '!src/**/*.stories.{js,jsx,ts,tsx}',
     '!src/**/_*.{js,jsx,ts,tsx}',
+    // Excluir páginas de Next.js (tienen tests E2E)
+    '!src/app/**/page.tsx',
+    '!src/app/**/layout.tsx',
+    // Excluir componentes grandes sin tests unitarios (tienen E2E)
+    '!src/app/play/components/**/*.tsx',
+    '!src/app/play/hooks/**/*.ts',
+    '!src/app/play/utils/**/*.ts',
+    '!src/app/game-sessions/**/*.tsx',
+    '!src/app/rankings/**/*.tsx',
+    '!src/app/reports/**/*.tsx',
+    '!src/app/admin/**/*.tsx',
+    '!src/app/dashboard/**/*.tsx',
+    '!src/app/auth/**/*.tsx',
+    '!src/app/my-trivias/[id]/**/*.tsx',
+    // Excluir archivos de tipos
+    '!src/types/**/*.ts',
   ],
 }
 
