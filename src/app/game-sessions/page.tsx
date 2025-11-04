@@ -1,270 +1,334 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import { useAuth } from '@/hooks/useAuth';
+
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/hooks/useAuth';
 import { gameSessionsService } from '@/services/game-sessions.service';
-import { Question, GameSession } from '@/types/game';
 import styles from './game-sessions.module.css';
-import apiClient from '@/lib/api-client';
+
+type SessionStatus = 'all' | 'in_progress' | 'completed' | 'abandoned';
+
+interface SessionData {
+  session_id: string;
+  trivia_id: string;
+  trivia_title: string;
+  category: string;
+  status: 'in_progress' | 'completed' | 'abandoned';
+  total_score: number;
+  correct_answers: number;
+  total_questions: number;
+  accuracy_percentage: number;
+  time_spent_seconds: number;
+  started_at: string;
+  completed_at?: string;
+}
 
 export default function GameSessionsPage() {
-  const { user, isAuthenticated, isLoading, logout } = useAuth();
   const router = useRouter();
+  const { user, isAuthenticated, isLoading: authLoading } = useAuth();
 
-  const [session, setSession] = useState<GameSession | null>(null);
-  const [sessionActive, setSessionActive] = useState(false);
-  const [question, setQuestion] = useState<Question | null>(null);
-  const [questionNumber, setQuestionNumber] = useState<number>(1);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [feedback, setFeedback] = useState<'correct' | 'incorrect' | null>(null);
-  const [score, setScore] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>('');
-  const [lastQuestionReached, setLastQuestionReached] = useState(false);
+  const [sessions, setSessions] = useState<SessionData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [statusFilter, setStatusFilter] = useState<SessionStatus>('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalSessions, setTotalSessions] = useState(0);
+  const ITEMS_PER_PAGE = 6;
 
-  // Redirigir si no está autenticado
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) router.push('/auth/login');
-  }, [isAuthenticated, isLoading, router]);
+    if (!authLoading && !isAuthenticated) {
+      router.push('/auth/login');
+    }
+  }, [isAuthenticated, authLoading, router]);
 
-  // Cargar sesión activa al iniciar
   useEffect(() => {
-    if (!isLoading && isAuthenticated) fetchCurrentSession();
-  }, [isLoading, isAuthenticated]);
-
-  // Obtener sesión actual del backend
-  const fetchCurrentSession = async () => {
-    setLoading(true);
-    setError('');
-    try {
-      const currentSession = await gameSessionsService.getCurrentSession();
-      if (currentSession) {
-        setSession(currentSession);
-        setSessionActive(true);
-        setQuestionNumber(currentSession.current_question || 1);
-        fetchQuestion(currentSession.session_id, currentSession.current_question || 1);
-        setScore(currentSession.total_score || 0);
-      } else {
-        setSessionActive(false);
-      }
-    } catch {
-      setSessionActive(false);
-    } finally {
-      setLoading(false);
+    if (isAuthenticated) {
+      loadSessions();
     }
-  };
+  }, [isAuthenticated, statusFilter, currentPage]);
 
-  // Obtener pregunta actual
-  const fetchQuestion = async (sessionId: string, number: number) => {
+  const loadSessions = async () => {
     try {
-      const q = await gameSessionsService.getQuestion(sessionId, number);
-      setQuestion(q);
-      setSelectedOption(null);
-      setFeedback(null);
-    } catch {
-      setError('Error al cargar la pregunta');
-    }
-  };
-
-  // Manejar respuesta seleccionada
-  const handleAnswer = async (optionId: string) => {
-    if (!question || !session) return;
-    setSelectedOption(optionId);
-
-    try {
-      const response = await gameSessionsService.submitAnswer(session.session_id, {
-        question_id: question.question_id,
-        selected_option_id: optionId,
-        time_taken_seconds: 0,
+      setLoading(true);
+      setError('');
+      const response = await gameSessionsService.getHistory({
+        page: currentPage,
+        limit: ITEMS_PER_PAGE,
+        status: statusFilter === 'all' ? undefined : statusFilter,
       });
 
-      if (response.correct || response.is_correct) {
-        setFeedback('correct');
-        setScore((prev) => prev + (response.points_earned || question.points_value));
+      // Normalizar los datos para asegurar que tenemos trivia_id
+      const normalizedSessions = (response.sessions || []).map((session: any) => ({
+        ...session,
+        trivia_id: session.trivia_id || session.trivia?.id,
+      }));
+
+      setSessions(normalizedSessions);
+      setTotalPages(response.pagination?.total_pages || 1);
+      setTotalSessions(response.pagination?.total_items || 0);
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Error al cargar las sesiones');
+      setSessions([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResumeSession = async (sessionId: string) => {
+    // Redirigir al módulo de juego con la sesión específica
+    router.push(/play?resume=${sessionId});
+  };
+
+  const handlePlayAgain = async (triviaId: string, triviaTitle: string) => {
+    try {
+      setLoading(true);
+      setError('');
+      
+      // Intentar crear una nueva sesión con la misma trivia
+      const newSession = await gameSessionsService.createSession({ trivia_id: triviaId });
+      
+      // Redirigir al juego con la nueva sesión
+      router.push(/play?resume=${newSession.session_id});
+    } catch (err: any) {
+      setLoading(false);
+      const errorMessage = err.response?.data?.message || 'Error al iniciar la partida';
+      
+      // Verificar diferentes tipos de errores
+      if (err.response?.status === 404) {
+        setError(La trivia "${triviaTitle}" ya no está disponible. Es posible que haya sido eliminada.);
+      } else if (errorMessage.includes('no está publicada')) {
+        setError(La trivia "${triviaTitle}" ya no está publicada y no se puede jugar en este momento.);
+      } else if (errorMessage.includes('no tiene preguntas')) {
+        setError(La trivia "${triviaTitle}" no tiene preguntas disponibles.);
       } else {
-        setFeedback('incorrect');
+        setError(No se pudo iniciar la trivia "${triviaTitle}": ${errorMessage});
       }
-
-      setTimeout(() => {
-        if (response.next_question) {
-          setQuestionNumber(response.next_question.question_number);
-          fetchQuestion(session.session_id, response.next_question.question_number);
-        } else {
-          setLastQuestionReached(true);
-          setQuestion(null);
-        }
-      }, 1200);
-    } catch {
-      setError('Error al enviar la respuesta');
+      
+      // Scroll hacia arriba para ver el error
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
-  // Finalizar sesión y guardar score
-  const finalizeSession = async () => {
-    if (!session || !user) return;
-    setLoading(true);
-    setError('');
-    try {
-      await gameSessionsService.completeSession(session.session_id);
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
 
-      if (user.id) {
-        try {
-          await apiClient.put(`/users/${user.id}/score`, { total_score: score });
-        } catch {
-          try {
-            await apiClient.post(`/users/${user.id}/score`, { total_score: score });
-          } catch {
-            setError('Score guardado parcialmente o no se pudo guardar automáticamente.');
-          }
-        }
-      }
-
-      setSessionActive(false);
-      setLastQuestionReached(true);
-      setQuestion(null);
-      setError('Se guardó el score y la partida ha finalizado.');
-    } catch {
-      setError('Error al finalizar la sesión y guardar el score');
-    } finally {
-      setLoading(false);
+  const formatDuration = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    
+    if (hours > 0) {
+      return ${hours}h ${minutes}m ${secs}s;
+    } else if (minutes > 0) {
+      return ${minutes}m ${secs}s;
+    } else {
+      return ${secs}s;
     }
   };
 
-  // Abandonar sesión
-  const abandonSession = async () => {
-    if (!session || !user) return;
-    setLoading(true);
-    setError('');
-    try {
-      await gameSessionsService.abandonSession(session.session_id);
-
-      if (user.id) {
-        try {
-          await apiClient.put(`/users/${user.id}/score`, { total_score: score });
-        } catch {
-          console.error('No se pudo guardar score parcial.');
-        }
-      }
-
-      setSessionActive(false);
-      setQuestion(null);
-      setLastQuestionReached(true);
-      setError('Partida abandonada. Score guardado.');
-    } catch {
-      setError('Error al abandonar la sesión');
-    } finally {
-      setLoading(false);
-    }
+  const getStatusBadge = (status: string) => {
+    const statusMap = {
+      in_progress: { label: '⏸ En Progreso', className: styles.statusInProgress },
+      completed: { label: '✅ Completada', className: styles.statusCompleted },
+      abandoned: { label: '❌ Abandonada', className: styles.statusAbandoned },
+    };
+    return statusMap[status as keyof typeof statusMap] || { label: status, className: '' };
   };
 
-  // Reset de la sesión
-  const resetSession = () => {
-    setSession(null);
-    setSessionActive(false);
-    setQuestion(null);
-    setQuestionNumber(1);
-    setScore(0);
-    setLastQuestionReached(false);
-    setSelectedOption(null);
-    setFeedback(null);
-    setError('');
-  };
-
-  // Loader
-  if (isLoading || loading) {
+  if (authLoading || loading) {
     return (
       <div className={styles.container}>
-        <div className={styles.header}>
-          <h1>Game Sessions</h1>
-          <div className={styles.userInfo}>
-            <span>{user ? `Hola, ${user.name}` : 'Cargando...'}</span>
-          </div>
+        <div className={styles.loading}>
+          <div className={styles.spinner}></div>
+          <p>Cargando sesiones...</p>
         </div>
-        <main className={styles.main}>
-          <p>Cargando sesión...</p>
-        </main>
       </div>
     );
   }
 
   return (
     <div className={styles.container}>
-      {/* Header */}
       <header className={styles.header}>
-        <h1>Game Sessions</h1>
-        <div className={styles.userInfo}>
+        <div className={styles.headerLeft}>
+          <button onClick={() => router.push('/dashboard')} className={styles.backButton}>
+            ← Volver
+          </button>
+          <h1>📊 Mis Sesiones de Juego</h1>
+        </div>
+        <div className={styles.headerRight}>
           <span>Hola, {user?.name}</span>
-          <button className={styles.smallButton} onClick={() => router.push('/admin/dashboard')}>Volver</button>
-          <button className={styles.smallButtonCS} onClick={logout}>Cerrar Sesión</button>
         </div>
       </header>
 
-      {/* Main */}
       <main className={styles.main}>
+        {/* Filtros */}
+        <div className={styles.filters}>
+          <h3>Filtrar por estado:</h3>
+          <div className={styles.filterButtons}>
+            <button
+              onClick={() => {
+                setStatusFilter('all');
+                setCurrentPage(1);
+              }}
+              className={${styles.filterButton} ${statusFilter === 'all' ? styles.filterButtonActive : ''}}
+            >
+              📋 Todas 
+            </button>
+            <button
+              onClick={() => {
+                setStatusFilter('in_progress');
+                setCurrentPage(1);
+              }}
+              className={${styles.filterButton} ${statusFilter === 'in_progress' ? styles.filterButtonActive : ''}}
+            >
+              ⏸ En Progreso
+            </button>
+            <button
+              onClick={() => {
+                setStatusFilter('completed');
+                setCurrentPage(1);
+              }}
+              className={${styles.filterButton} ${statusFilter === 'completed' ? styles.filterButtonActive : ''}}
+            >
+              ✅ Completadas
+            </button>
+            <button
+              onClick={() => {
+                setStatusFilter('abandoned');
+                setCurrentPage(1);
+              }}
+              className={${styles.filterButton} ${statusFilter === 'abandoned' ? styles.filterButtonActive : ''}}
+            >
+              ❌ Abandonadas
+            </button>
+          </div>
+        </div>
 
-        {/* Sin sesiones activas */}
-        {!sessionActive && !lastQuestionReached && (
-          <div className={styles.noSession}>
-            <p>No tienes sesiones activas.</p>
-            <p>Puedes jugar ahora en <button className={styles.smallButton} onClick={() => router.push('/play')}>JUGAR TRIVIAS</button></p>
+        {error && (
+          <div className={styles.error}>
+            {error}
+            <button onClick={() => setError('')}>✕</button>
           </div>
         )}
 
-        {/* Sesión finalizada */}
-        {!sessionActive && lastQuestionReached && (
-          <div className={styles.noSession}>
-            <p>¡La partida ha finalizado!</p>
-            <p>Puntaje final: <strong>{score}</strong></p>
-            {error && <p style={{ color: 'green' }}>{error}</p>}
-            <button className={styles.smallButton} onClick={() => router.push('/admin/dashboard')}>Volver al Dashboard</button>
+        {/* Lista de sesiones */}
+        {sessions.length === 0 ? (
+          <div className={styles.empty}>
+            <div className={styles.emptyIcon}>🎮</div>
+            <h3>No hay sesiones {statusFilter !== 'all' && statusFilter.replace('_', ' ')}</h3>
+            <p>Comienza a jugar para ver tu historial aquí</p>
+            <button onClick={() => router.push('/play')} className={styles.playButton}>
+              🎮 Jugar Trivia
+            </button>
           </div>
-        )}
+        ) : (
+          <>
+            <div className={styles.sessionsList}>
+              {sessions.map((session) => {
+                const statusInfo = getStatusBadge(session.status);
+                return (
+                  <div key={session.session_id} className={styles.sessionCard}>
+                    <div className={styles.sessionHeader}>
+                      <div>
+                        <h3>{session.trivia_title}</h3>
+                        <p className={styles.sessionCategory}>📂 {session.category}</p>
+                      </div>
+                      <span className={${styles.statusBadge} ${statusInfo.className}}>
+                        {statusInfo.label}
+                      </span>
+                    </div>
 
-        {/* Sesión activa */}
-        {sessionActive && (
-          <div className={styles.sessionCard}>
-            {question && (
-              <>
-                <div className={styles.questionText}>
-                  Pregunta #{question.order}: {question.question_text}
+                    <div className={styles.sessionBody}>
+                      <div className={styles.sessionStats}>
+                        <div className={styles.stat}>
+                          <span className={styles.statLabel}>Puntuación</span>
+                          <span className={styles.statValue}>{session.total_score}</span>
+                        </div>
+                        <div className={styles.stat}>
+                          <span className={styles.statLabel}>Precisión</span>
+                          <span className={styles.statValue}>{session.accuracy_percentage}%</span>
+                        </div>
+                        <div className={styles.stat}>
+                          <span className={styles.statLabel}>Preguntas</span>
+                          <span className={styles.statValue}>
+                            {session.correct_answers}/{session.total_questions}
+                          </span>
+                        </div>
+                        
+                      </div>
+
+                      <div className={styles.sessionDates}>
+                        {session.completed_at && (
+                          <p>
+                            <strong>Finalizada:</strong> {formatDate(session.completed_at)}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className={styles.sessionFooter}>
+                      {session.status === 'in_progress' ? (
+                        <button
+                          onClick={() => handleResumeSession(session.session_id)}
+                          className={styles.resumeButton}
+                          disabled={loading}
+                        >
+                          ▶ Continuar Jugando
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => handlePlayAgain(session.trivia_id, session.trivia_title)}
+                          className={styles.playAgainButton}
+                          disabled={loading}
+                        >
+                          🔄 Jugar de Nuevo
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Paginación */}
+            {totalPages > 1 && (
+              <div className={styles.pagination}>
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                  className={styles.paginationButton}
+                  disabled={currentPage === 1}
+                >
+                  ← Anterior
+                </button>
+
+                <div className={styles.paginationInfo}>
+                  Página {currentPage} de {totalPages}
                 </div>
-                <ul className={styles.optionsList}>
-                  {question.options.map(opt => (
-                    <li key={opt.option_id}>
-                      <button
-                        className={`${styles.optionButton} ${
-                          selectedOption === opt.option_id
-                            ? feedback === 'correct'
-                              ? styles.correct
-                              : feedback === 'incorrect'
-                              ? styles.incorrect
-                              : ''
-                            : ''
-                        }`}
-                        onClick={() => handleAnswer(opt.option_id)}
-                        disabled={!!selectedOption}
-                      >
-                        {opt.option_text}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </>
+
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                  className={styles.paginationButton}
+                  disabled={currentPage === totalPages}
+                >
+                  Siguiente →
+                </button>
+              </div>
             )}
 
-            {lastQuestionReached && !question && <p>¡Has terminado todas las preguntas!</p>}
-
-            <div className={styles.score}>Puntaje: {score}</div>
-
-            <div style={{ display: 'flex', gap: '12px', marginTop: '12px' }}>
-              <button className={styles.smallButton} onClick={finalizeSession}>Finalizar sesión</button>
-              <button className={styles.smallButton} onClick={abandonSession}>Abandonar partida</button>
+            <div className={styles.resultsInfo}>
+              Mostrando {sessions.length} de {totalSessions} sesiones
             </div>
-          </div>
+          </>
         )}
-
-        {/* Mensaje de error general */}
-        {error && sessionActive && <p style={{ color: 'red' }}>{error}</p>}
       </main>
     </div>
   );
