@@ -126,12 +126,6 @@ export default function DashboardPage() {
           </button>
 
 
-          <button className={styles.actionCard} onClick={() => {}}>
-            <div className={styles.actionIcon}>📈</div>
-            <h3>Estadísticas</h3>
-            <p>Tu desempeño y métricas personales</p>
-          </button>
-
           <button className={styles.actionCard} onClick={handleEditProfile}>
             <div className={styles.actionIcon}>👤</div>
             <h3>Mi Perfil</h3>

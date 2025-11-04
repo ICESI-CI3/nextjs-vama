@@ -24,6 +24,7 @@ export default function AdminDashboard() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
+
   useEffect(() => {
     if (!isLoading) {
       if (!isAuthenticated || user?.role !== 'admin') {
@@ -59,6 +60,7 @@ export default function AdminDashboard() {
       setActionLoading(null);
     }
   };
+
 
   const handleDeleteUser = async (id: string) => {
     if (!confirm('¿Estás seguro de eliminar este usuario?')) return;
@@ -122,6 +124,7 @@ export default function AdminDashboard() {
       (filterStatus === 'inactive' && !u.is_active);
 
     return matchesSearch && matchesRole && matchesStatus;
+
   });
 
   // Paginación
@@ -166,6 +169,8 @@ export default function AdminDashboard() {
         </div>
       )}
 
+      
+
       {/* Barra de búsqueda y filtros */}
       <div className={styles.filtersContainer}>
         <div className={styles.searchBar}>
@@ -198,6 +203,19 @@ export default function AdminDashboard() {
           </select>
         </div>
       </div>
+
+     
+      <section className={styles.reportsSection}>
+        <h2 className={styles.subtitle}>Reportes y estadísticas</h2>
+        <div className={styles.reportsGrid}>
+          <div className={styles.reportCard} onClick={() => router.push('/reports')}>
+            <div className={styles.reportIcon}>📈</div>
+            <h3>Reportes</h3>
+            <p>Desempeño y métricas</p>
+          </div>
+          </div>
+      </section>
+
 
       {/* Información de resultados */}
       <div className={styles.resultsInfo}>
@@ -327,6 +345,8 @@ export default function AdminDashboard() {
   );
 }
 
+
+
 // Modal para editar usuario
 function EditUserModal({
   user,
@@ -434,9 +454,13 @@ function ChangeRoleModal({
             <button type="button" onClick={onClose} className={styles.cancelButton}>
               Cancelar
             </button>
+
+            
           </div>
         </form>
+                  
       </div>
     </div>
+
   );
 }
