@@ -87,6 +87,24 @@ class GameSessionsService {
     const response = await apiClient.get('/game-sessions/history', { params });
     return response.data.data;
   }
+
+  /**
+   * Obtener todas las sesiones en progreso del usuario
+   */
+  async getInProgressSessions(): Promise<GameSession[]> {
+    const response = await apiClient.get('/game-sessions/history', {
+      params: { status: 'in_progress', limit: 100 },
+    });
+    return response.data.data.sessions || [];
+  }
+
+  /**
+   * Obtener detalles de una sesión específica por ID
+   */
+  async getSessionById(sessionId: string): Promise<any> {
+    const response = await apiClient.get(`/game-sessions/${sessionId}`);
+    return response.data.data;
+  }
 }
 
 export const gameSessionsService = new GameSessionsService();

@@ -6,6 +6,18 @@ import { rankingsService } from '@/services/rankings.service';
 import { categoriesService } from '@/services/categories.service';
 import styles from './rankings.module.css';
 
+// Imagen por defecto en formato data URI SVG
+const DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e2e8f0'/%3E%3Cpath d='M50 30c-8.3 0-15 6.7-15 15 0 8.3 6.7 15 15 15s15-6.7 15-15c0-8.3-6.7-15-15-15zm0 40c-11 0-20 4.5-20 10v5h40v-5c0-5.5-9-10-20-10z' fill='%2394a3b8'/%3E%3C/svg%3E";
+
+const getDefaultAvatar = () => DEFAULT_AVATAR;
+
+const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  const target = e.target as HTMLImageElement;
+  if (target.src !== DEFAULT_AVATAR) {
+    target.src = DEFAULT_AVATAR;
+  }
+};
+
 export default function RankingsPage() {
   const router = useRouter();
   const { user, isAuthenticated, isLoading, logout } = useAuth();
@@ -203,7 +215,7 @@ export default function RankingsPage() {
               <small>Última actualización: {new Date(lastUpdated).toLocaleString()}</small>
             )}
             <button onClick={fetchAll} className={styles.refreshButton}>
-              🔄 Refrescar
+               Refrescar
             </button>
           </div>
         </div>
@@ -227,10 +239,11 @@ export default function RankingsPage() {
             >
               <div className={styles.rankBadge}>#{p.position}</div>
               <img
-                src={p.profile_image || '/default-avatar.png'}
+                src={p.profile_image || getDefaultAvatar()}
                 alt={p.username}
                 className={styles.avatarLarge}
                 onClick={() => router.push(`/profile/${p.user_id}`)}
+                onError={handleImageError}
               />
               <h3>{p.username}</h3>
               <p className={styles.score}>
@@ -250,10 +263,11 @@ export default function RankingsPage() {
                 src={
                   userRanking.user?.profile_image ??
                   userRanking.profile_image ??
-                  '/default-avatar.png'
+                  getDefaultAvatar()
                 }
                 alt={userRanking.user?.username ?? userRanking.username}
                 className={styles.avatar}
+                onError={handleImageError}
               />
               <div>
                 <strong>{userRanking.user?.username ?? userRanking.username}</strong>
@@ -334,9 +348,10 @@ export default function RankingsPage() {
           <div className={styles.pos}>#{p.position}</div>
           <div className={styles.playerInfo}>
             <img
-              src={p.profile_image || '/default-avatar.png'}
+              src={p.profile_image || getDefaultAvatar()}
               alt={p.username}
               className={styles.avatarSmall}
+              onError={handleImageError}
             />
             <div>
               <div className={styles.playerName}>{p.username}</div>
