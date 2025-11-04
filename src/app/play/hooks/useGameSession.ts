@@ -182,15 +182,58 @@ export function useGameSession(refreshUser: () => Promise<void>, userId?: string
         console.log('🎯 Última pregunta - completando automáticamente');
         // Es la última pregunta - completar automáticamente
         try {
+          // Esperar 3 segundos para que el usuario vea el feedback
           await new Promise((resolve) => setTimeout(resolve, 3000));
+          
+          // Completar la sesión
           const completedSession = await completeSessionWithRetry(session.session_id);
+          
+          // Actualizar el estado con la sesión completada
           setSession(completedSession);
           setStep('completed');
+          setLastAnswer(null); // Limpiar la respuesta para no mostrar el botón
+          setCanAdvance(false); // Deshabilitar avance
+          
+          // Actualizar el usuario (puntuación, etc.)
           await refreshUser();
+          
+          console.log('✅ Sesión completada exitosamente');
         } catch (completeErr: any) {
-          setError(
-            completeErr.response?.data?.message || 'Error al completar la sesión automáticamente'
-          );
+          const errorMessage = completeErr.response?.data?.message || 'Error al completar la sesión automáticamente';
+          
+          // Si el error es que la sesión ya fue completada, no mostrar error
+          if (errorMessage.includes('ya fue completada') || errorMessage.includes('ya fue abandonada')) {
+            console.log('ℹ️ Sesión ya completada, obteniendo estado actual');
+            try {
+              // Intentar obtener el estado actual de la sesión
+              const currentSession = await gameSessionsService.getSessionById(session.session_id);
+              setSession({
+                session_id: currentSession.session_id || currentSession.id,
+                trivia_id: currentSession.trivia?.id || currentSession.trivia_id,
+                trivia_title: currentSession.trivia?.title,
+                player_id: currentSession.player?.id || currentSession.player_id,
+                status: currentSession.status,
+                current_question: currentSession.current_question,
+                total_questions: currentSession.total_questions,
+                correct_answers: currentSession.correct_answers,
+                total_score: currentSession.total_score,
+                time_spent_seconds: currentSession.time_spent_seconds,
+                started_at: currentSession.started_at,
+                completed_at: currentSession.completed_at,
+              });
+              setStep('completed');
+              setLastAnswer(null);
+              setCanAdvance(false);
+              await refreshUser();
+            } catch (getErr: any) {
+              // Si no podemos obtener el estado, mostrar el error pero no bloquear
+              console.error('Error obteniendo estado de sesión:', getErr);
+              setError(''); // No mostrar error al usuario si la sesión ya está completada
+            }
+          } else {
+            // Para otros errores, mostrar el mensaje
+            setError(errorMessage);
+          }
         }
         return;
       }
@@ -236,10 +279,46 @@ export function useGameSession(refreshUser: () => Promise<void>, userId?: string
       const completedSession = await completeSessionWithRetry(session.session_id);
       setSession(completedSession);
       setStep('completed');
+      setLastAnswer(null); // Limpiar la respuesta
+      setCanAdvance(false); // Deshabilitar avance
       await refreshUser();
     } catch (err: any) {
       const errorMessage = err.response?.data?.message || 'Error al completar la sesión';
-      setError(errorMessage);
+      
+      // Si la sesión ya fue completada, no mostrar error, solo obtener el estado actual
+      if (errorMessage.includes('ya fue completada') || errorMessage.includes('ya fue abandonada')) {
+        console.log('ℹ️ Sesión ya completada, obteniendo estado actual');
+        try {
+          const currentSession = await gameSessionsService.getSessionById(session.session_id);
+          setSession({
+            session_id: currentSession.session_id || currentSession.id,
+            trivia_id: currentSession.trivia?.id || currentSession.trivia_id,
+            trivia_title: currentSession.trivia?.title,
+            player_id: currentSession.player?.id || currentSession.player_id,
+            status: currentSession.status,
+            current_question: currentSession.current_question,
+            total_questions: currentSession.total_questions,
+            correct_answers: currentSession.correct_answers,
+            total_score: currentSession.total_score,
+            time_spent_seconds: currentSession.time_spent_seconds,
+            started_at: currentSession.started_at,
+            completed_at: currentSession.completed_at,
+          });
+          setStep('completed');
+          setLastAnswer(null);
+          setCanAdvance(false);
+          await refreshUser();
+          // No mostrar error al usuario
+          setError('');
+        } catch (getErr: any) {
+          console.error('Error obteniendo estado de sesión:', getErr);
+          // No mostrar error si la sesión ya está completada
+          setError('');
+        }
+      } else {
+        // Para otros errores, mostrar el mensaje
+        setError(errorMessage);
+      }
     } finally {
       setLoading(false);
     }

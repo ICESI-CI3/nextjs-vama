@@ -32,9 +32,10 @@ export function QuestionForm({
   const [pointsValue, setPointsValue] = useState(question?.points_value || 10);
   const [options, setOptions] = useState<OptionData[]>(
     question?.options && question.options.length > 0
-      ? question.options.map((opt, idx) => ({
+      ? question.options.map((opt) => ({
           text: opt.option_text,
-          is_correct: idx === 0, // Simplificación: asume que la primera es correcta
+          // Comparar con correct_answer para determinar cuál es correcta
+          is_correct: opt.option_text === question.correct_answer,
         }))
       : [
           { text: '', is_correct: true },

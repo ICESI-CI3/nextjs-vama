@@ -16,11 +16,14 @@ export function QuestionCard({
   onEdit,
   onDelete,
 }: QuestionCardProps) {
-  const correctOption = question.options?.find((opt) =>
-    question.question_type === 'multiple_choice'
-      ? opt.option_text === question.question_text // Comparar con respuesta correcta
-      : opt.option_text === 'True' || opt.option_text === 'False'
-  );
+  // Debug: verificar que tenemos correct_answer (solo en desarrollo)
+  if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+    console.log('QuestionCard render:', {
+      question_id: question.question_id,
+      correct_answer: question.correct_answer,
+      options: question.options?.map(opt => ({ text: opt.option_text, is_correct: opt.option_text === question.correct_answer })),
+    });
+  }
 
   return (
     <div className={styles.card}>
@@ -42,9 +45,8 @@ export function QuestionCard({
         <div className={styles.options}>
           {question.options && question.options.length > 0 ? (
             question.options.map((option, idx) => {
-              // Determinar si es la opción correcta
-              // Esto es una simplificación - en producción deberías tener un campo is_correct
-              const isCorrect = idx === 0; // Asumiendo que la primera es correcta por ahora
+              // Determinar si es la opción correcta comparando con correct_answer
+              const isCorrect = option.option_text === question.correct_answer;
 
               return (
                 <div

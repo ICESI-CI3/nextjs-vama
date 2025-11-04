@@ -122,17 +122,32 @@ export default function EditTriviaPage() {
 
   const handleQuestionSaved = async (savedQuestion?: Question) => {
     console.log('🎉 Pregunta guardada, actualizando estado local...', savedQuestion);
+    
+    // Guardar el valor de editingQuestion antes de limpiarlo
+    const wasEditing = !!editingQuestion;
+    const editedQuestionId = editingQuestion?.question_id;
+    
     setShowQuestionForm(false);
     setEditingQuestion(null);
     
     if (savedQuestion) {
       // Si recibimos la pregunta guardada, actualizarla directamente en el estado
-      if (editingQuestion) {
-        // Actualización: reemplazar la pregunta existente
+      if (wasEditing && editedQuestionId) {
+        // Actualización: reemplazar la pregunta existente con la pregunta actualizada
         setQuestions(prevQuestions => 
-          prevQuestions.map(q => 
-            q.question_id === savedQuestion.question_id ? savedQuestion : q
-          )
+          prevQuestions.map(q => {
+            // Comparar tanto por question_id como por id (por si acaso)
+            if (q.question_id === editedQuestionId || q.question_id === savedQuestion.question_id) {
+              console.log('🔄 Actualizando pregunta en estado:', {
+                anterior: q.question_id,
+                nueva: savedQuestion.question_id,
+                correct_answer_anterior: q.correct_answer,
+                correct_answer_nueva: savedQuestion.correct_answer,
+              });
+              return savedQuestion;
+            }
+            return q;
+          })
         );
         console.log('✅ Pregunta actualizada en el estado local');
       } else {
@@ -141,8 +156,8 @@ export default function EditTriviaPage() {
         console.log('✅ Nueva pregunta agregada al estado local');
       }
     } else {
-      // Si no recibimos la pregunta (fallback), intentar recargar desde el backend
-      console.log('⚠️ No se recibió la pregunta guardada, intentando recargar desde backend...');
+      // Si no recibimos la pregunta (fallback), recargar desde el backend para asegurar datos actualizados
+      console.log('⚠️ No se recibió la pregunta guardada, recargando desde backend...');
       try {
         const questionsData = await questionsService.getQuestionsByTriviaId(triviaId);
         setQuestions(questionsData);
