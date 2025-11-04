@@ -76,8 +76,16 @@
 
 .typeButtons {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 24px;
+  justify-items: center;
+}
+
+/* Botón centrado en la parte inferior (cono) */
+.typeButtonCenter {
+  grid-column: 1 / -1;
+  max-width: 400px;
+  justify-self: center;
 }
 
 .typeButton {
@@ -881,6 +889,15 @@
 @media (max-width: 768px) {
   .header {
     padding: 16px 20px;
+  }
+
+  .typeButtons {
+    grid-template-columns: 1fr;
+  }
+
+  .typeButtonCenter {
+    grid-column: 1;
+    max-width: 100%;
   }
 
   .gameHeader {

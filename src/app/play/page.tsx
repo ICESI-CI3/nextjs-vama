@@ -108,7 +108,7 @@ export default function PlayPage() {
             >
               <div className={styles.typeIcon}>📝</div>
               <h3>Trivias Propias</h3>
-              <p>Juega con trivias creadas en la plataforma</p>
+              <p>Juega trivias creadas por usuarios de la plataforma</p>
             </button>
             <button
               onClick={() => handleGameTypeSelection('opentdb')}
@@ -121,7 +121,7 @@ export default function PlayPage() {
             </button>
             <button
               onClick={viewInProgressSessions}
-              className={styles.typeButton}
+              className={`${styles.typeButton} ${styles.typeButtonCenter}`}
               disabled={loading}
             >
               <div className={styles.typeIcon}>⏸️</div>
