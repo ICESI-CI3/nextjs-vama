@@ -116,11 +116,15 @@ export default function DashboardPage() {
             <p>Historial de tus partidas y sesiones</p>
           </button>
 
-          <button className={styles.actionCard} onClick={() => {}}>
+          <button
+            className={styles.actionCard}
+            onClick={() => router.push('/rankings')}
+          >
             <div className={styles.actionIcon}>🏆</div>
             <h3>Rankings</h3>
             <p>Clasificaciones globales y por categoría</p>
           </button>
+
 
           <button className={styles.actionCard} onClick={() => {}}>
             <div className={styles.actionIcon}>📈</div>
