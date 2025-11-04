@@ -22,8 +22,9 @@ export function OpenTDBSelection({
     category: '',
     difficulty: 'medium' as 'easy' | 'medium' | 'hard',
     type: 'multiple' as 'multiple' | 'boolean',
+    lang: 'es' as string, // Idioma por defecto: español
   });
-  const [tempAmount, setTempAmount] = useState<string>('10');
+  const [tempAmount, setTempAmount] = useState<string>('5');
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [creating, setCreating] = useState(false);
 
@@ -74,12 +75,13 @@ export function OpenTDBSelection({
         throw new Error('No hay categorías disponibles en la aplicación');
       }
 
-      // Obtener preguntas de OpenTDB
+      // Obtener preguntas de OpenTDB (ya traducidas en el backend)
       const openTDBResponse = await externalApiService.fetchQuestions({
         amount: formData.amount,
         category: formData.category ? parseInt(formData.category) : undefined,
         difficulty: formData.difficulty,
         type: formData.type,
+        lang: formData.lang, // 🌐 Idioma para traducción
       });
 
       // Crear trivia temporal
@@ -181,6 +183,24 @@ export function OpenTDBSelection({
             <option value="multiple">Opción múltiple</option>
             <option value="boolean">Verdadero/Falso</option>
           </select>
+        </div>
+
+        <div className={styles.formGroup}>
+          <label>Idioma 🌐</label>
+          <select
+            value={formData.lang}
+            onChange={(e) => setFormData({ ...formData, lang: e.target.value })}
+          >
+            <option value="es">Español</option>
+            <option value="en">English (Original)</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="it">Italiano</option>
+            <option value="pt">Português</option>
+          </select>
+          <small style={{ fontSize: '0.85rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
+            Las preguntas se traducirán automáticamente
+          </small>
         </div>
 
         <button

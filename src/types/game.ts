@@ -125,5 +125,6 @@ export interface FetchQuestionsDto {
   type?: 'multiple' | 'boolean';
   encode?: 'urlLegacy' | 'url3986' | 'base64';
   token?: string;
+  lang?: string;
 }
 
