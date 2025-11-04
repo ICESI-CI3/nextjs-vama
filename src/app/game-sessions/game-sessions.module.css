@@ -1,0 +1,303 @@
+
+.container {
+  min-height: 100vh;
+  background: #f0f4f8;
+  transition: background 0.3s ease, color 0.3s ease;
+  padding-bottom: 50px;
+  font-family: 'Inter', sans-serif;
+}
+
+.header {
+  background: #ffffff;
+  padding: 20px 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.header h1 {
+  color: #4f46e5;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.userInfo span {
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.smallButton {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  background: #4f46e5;
+  color: white;
+  transition: all 0.2s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.smallButton:hover {
+  background: #4338ca;
+  transform: translateY(-2px);
+}
+
+.smallButtonCS {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  background: #ef4444;
+  color: white;
+  transition: all 0.2s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.smallButtonCS:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+}
+
+.main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 50px 20px;
+}
+
+.noSession {
+  background: #ffffff;
+  border: 2px solid #d1d5db;
+  border-radius: 14px;
+  padding: 50px;
+  text-align: center;
+  color: #6b7280;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.sessionCard {
+  background: #ffffff;
+  border: 2px solid #d1d5db;
+  border-radius: 14px;
+  padding: 30px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  margin-bottom: 30px;
+  transition: transform 0.2s;
+}
+
+.sessionCard:hover {
+  transform: translateY(-2px);
+}
+
+.questionText {
+  font-size: 1.2rem;
+  margin-bottom: 18px;
+  color: #111827;
+  font-weight: 500;
+}
+
+.optionsList {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.optionButton {
+  padding: 14px 18px;
+  border-radius: 10px;
+  border: 2px solid #d1d5db;
+  cursor: pointer;
+  background: #f9fafb;
+  color: #111827;
+  font-weight: 500;
+  transition: all 0.2s;
+  text-align: left;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.optionButton:hover {
+  background: #e5e7eb;
+}
+
+.correct {
+  background: #34d399 !important;
+  color: white;
+  border-color: #10b981;
+  box-shadow: 0 2px 6px rgba(16,185,129,0.3);
+}
+
+.incorrect {
+  background: #f87171 !important;
+  color: white;
+  border-color: #ef4444;
+  box-shadow: 0 2px 6px rgba(239,68,68,0.3);
+}
+
+.score {
+  margin-top: 18px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #4f46e5;
+}
+
+/* Mejora para mensajes de noSession / partida finalizada */
+.noSession {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 60px 40px;
+  text-align: center;
+  color: #4b5563;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.noSession:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+}
+
+.noSession p {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.noSession strong {
+  color: #4f46e5;
+  font-weight: 700;
+}
+
+.noSession button {
+  margin-top: 10px;
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.noSession button:hover {
+  transform: translateY(-2px);
+}
+
+/* Colores de los botones según tipo */
+.noSession .smallButton {
+  background: #4f46e5;
+  color: #ffffff;
+}
+
+.noSession .smallButton:hover {
+  background: #4338ca;
+}
+
+.noSession .smallButtonCS {
+  background: #ef4444;
+}
+
+.noSession .smallButtonCS:hover {
+  background: #dc2626;
+}
+
+/* Iconos/emoji opcionales dentro del mensaje */
+.noSession .icon {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .container {
+    background: #111827;
+  }
+
+  .header {
+    background: #1f2937;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+
+  .header h1 {
+    color: #818cf8;
+  }
+
+  .userInfo span {
+    color: #e5e7eb;
+  }
+
+  .noSession {
+    background: #1f2937;
+    border-color: #374151;
+    color: #d1d5db;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+
+  .sessionCard {
+    background: #1f2937;
+    border-color: #374151;
+    color: #e5e7eb;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  }
+
+  .questionText {
+    color: #f3f4f6;
+  }
+
+  .optionButton {
+    background: #111827;
+    border-color: #374151;
+    color: #f3f4f6;
+  }
+
+  .optionButton:hover {
+    background: #1e293b;
+  }
+
+  .correct {
+    background: #34d399 !important;
+    border-color: #10b981;
+    color: white;
+  }
+
+  .incorrect {
+    background: #f87171 !important;
+    border-color: #ef4444;
+    color: white;
+  }
+
+  .score {
+    color: #818cf8;
+  }
+
+    .noSession {
+    background: #1f2937;
+    color: #e5e7eb;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  }
+
+  .noSession strong {
+    color: #818cf8;
+  }
+
+  .noSession button {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  }
+}
