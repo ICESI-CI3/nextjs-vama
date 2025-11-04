@@ -110,7 +110,7 @@ export default function DashboardPage() {
             <p>Explora y juega trivias disponibles</p>
           </button>
 
-          <button className={styles.actionCard} onClick={() => {}}>
+          <button className={styles.actionCard} onClick={() => router.push('/game-sessions')}>
             <div className={styles.actionIcon}>📊</div>
             <h3>Mis Sesiones</h3>
             <p>Historial de tus partidas y sesiones</p>
