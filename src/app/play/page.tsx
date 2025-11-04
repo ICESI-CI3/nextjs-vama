@@ -51,6 +51,21 @@ export default function PlayPage() {
     }
   }, [isAuthenticated, authLoading, router]);
 
+  // Verificar si hay un parámetro de sesión a reanudar en la URL
+  useEffect(() => {
+    if (typeof window !== 'undefined' && isAuthenticated && !loading) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const resumeSessionId = urlParams.get('resume');
+      if (resumeSessionId) {
+        // Reanudar automáticamente la sesión
+        console.log('📌 Reanudando sesión desde URL:', resumeSessionId);
+        handleResumeSession(resumeSessionId);
+        // Limpiar el parámetro de la URL
+        window.history.replaceState({}, '', '/play');
+      }
+    }
+  }, [isAuthenticated, loading]);
+
   if (authLoading) {
     return (
       <div className={styles.container}>
