@@ -181,7 +181,7 @@ export default function GameSessionsPage() {
               }}
               className={`${styles.filterButton} ${statusFilter === 'all' ? styles.filterButtonActive : ''}`}
             >
-              📋 Todas 
+              📋 Todas ({totalSessions})
             </button>
             <button
               onClick={() => {
@@ -263,10 +263,18 @@ export default function GameSessionsPage() {
                             {session.correct_answers}/{session.total_questions}
                           </span>
                         </div>
-                        
+                        <div className={styles.stat}>
+                          <span className={styles.statLabel}>Tiempo</span>
+                          <span className={styles.statValue}>
+                            {formatDuration(session.time_spent_seconds)}
+                          </span>
+                        </div>
                       </div>
 
                       <div className={styles.sessionDates}>
+                        <p>
+                          <strong>Iniciada:</strong> {formatDate(session.started_at)}
+                        </p>
                         {session.completed_at && (
                           <p>
                             <strong>Finalizada:</strong> {formatDate(session.completed_at)}
