@@ -18,7 +18,7 @@ export function OpenTDBSelection({
 }: OpenTDBSelectionProps) {
   const [categories, setCategories] = useState<any[]>([]);
   const [formData, setFormData] = useState({
-    amount: 10,
+    amount: 5,
     category: '',
     difficulty: 'medium' as 'easy' | 'medium' | 'hard',
     type: 'multiple' as 'multiple' | 'boolean',
@@ -45,19 +45,20 @@ export function OpenTDBSelection({
     }
   };
 
-  const validateForm = () => {
+  const validateForm = (): number | null => {
     try {
       const numAmount = validateOpenTDBForm(tempAmount);
       setFormData(prev => ({ ...prev, amount: numAmount }));
-      return true;
+      return numAmount;
     } catch (err: any) {
       alert(err.message);
-      return false;
+      return null;
     }
   };
 
   const handleCreateAndStart = async () => {
-    if (!validateForm()) {
+    const validatedAmount = validateForm();
+    if (validatedAmount === null) {
       return;
     }
 
@@ -77,7 +78,7 @@ export function OpenTDBSelection({
 
       // Obtener preguntas de OpenTDB (ya traducidas en el backend)
       const openTDBResponse = await externalApiService.fetchQuestions({
-        amount: formData.amount,
+        amount: validatedAmount, // Usar el valor validado directamente
         category: formData.category ? parseInt(formData.category) : undefined,
         difficulty: formData.difficulty,
         type: formData.type,

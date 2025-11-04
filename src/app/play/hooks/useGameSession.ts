@@ -22,6 +22,8 @@ export function useGameSession(refreshUser: () => Promise<void>, userId?: string
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [activeSession, setActiveSession] = useState<GameSession | null>(null);
+  const [canAdvance, setCanAdvance] = useState(true); // Controla si se puede avanzar después de ver la respuesta
+  const [countdown, setCountdown] = useState(0); // Contador visible para el usuario
 
   // Verificar si hay sesión activa al montar
   useEffect(() => {
@@ -154,10 +156,16 @@ export function useGameSession(refreshUser: () => Promise<void>, userId?: string
         next_question: answer.next_question,
         session_progress: answer.session_progress,
       };
+      // Desactivar loading inmediatamente para mostrar el feedback
+      setLoading(false);
+      
+      // Mostrar la respuesta
       setLastAnswer(decodedAnswer);
+      
+      // Deshabilitar el botón de avanzar
+      setCanAdvance(false);
 
       // Actualizar la sesión local con los datos de la respuesta
-      // session_progress contiene el estado actualizado
       if (decodedAnswer.session_progress) {
         setSession((prev) => ({
           ...prev!,
@@ -167,42 +175,55 @@ export function useGameSession(refreshUser: () => Promise<void>, userId?: string
         }));
       }
 
-      // Si hay siguiente pregunta, cargarla inmediatamente
-      if (answer.next_question) {
-        await loadQuestion(session.session_id, answer.next_question.question_number);
-      }
+      console.log('🔍 Iniciando countdown...', { hasNextQuestion: !!answer.next_question });
 
       // Intentar completar automáticamente si es la última pregunta
-      try {
-        const anyAnswer: any = answer;
-        if (anyAnswer && anyAnswer.next_question === null) {
-          setLoading(true);
-          await new Promise((resolve) => setTimeout(resolve, 2000));
-
+      if (!answer.next_question) {
+        console.log('🎯 Última pregunta - completando automáticamente');
+        // Es la última pregunta - completar automáticamente
+        try {
+          await new Promise((resolve) => setTimeout(resolve, 3000));
           const completedSession = await completeSessionWithRetry(session.session_id);
           setSession(completedSession);
           setStep('completed');
           await refreshUser();
-          return;
+        } catch (completeErr: any) {
+          setError(
+            completeErr.response?.data?.message || 'Error al completar la sesión automáticamente'
+          );
         }
-      } catch (completeErr: any) {
-        setError(
-          completeErr.response?.data?.message || 'Error al completar la sesión automáticamente'
-        );
-      } finally {
-        setLoading(false);
+        return;
       }
+
+      // Si hay más preguntas, esperar 2 segundos antes de permitir avanzar
+      console.log('⏱️ Iniciando countdown de 2 segundos');
+      setCountdown(2);
+      
+      for (let i = 1; i >= 0; i--) {
+        console.log('⏱️ Countdown:', i);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        setCountdown(i);
+      }
+      
+      console.log('✅ Countdown completado - habilitando botón');
+      // Habilitar el botón después del delay
+      setCanAdvance(true);
+
     } catch (err: any) {
       setError(err.response?.data?.message || 'Error al enviar la respuesta');
-    } finally {
       setLoading(false);
     }
   };
 
   const handleNextQuestion = async () => {
-    if (!session) return;
+    if (!session || !canAdvance) return;
+    setLastAnswer(null); // Limpiar la respuesta anterior
+    setCanAdvance(false); // Deshabilitar mientras se carga
+    setLoading(true);
     const nextQuestionNumber = session.current_question + 1;
     await loadQuestion(session.session_id, nextQuestionNumber);
+    setCanAdvance(true); // Habilitar de nuevo
+    setLoading(false);
   };
 
   const handleCompleteSession = async () => {
@@ -328,6 +349,8 @@ export function useGameSession(refreshUser: () => Promise<void>, userId?: string
     resetToTypeSelection,
     handleResumeSession,
     viewInProgressSessions,
+    canAdvance,
+    countdown,
   };
 }
 

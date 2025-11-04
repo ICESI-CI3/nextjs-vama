@@ -22,15 +22,13 @@ export async function completeSessionWithRetry(
         await new Promise(resolve => setTimeout(resolve, delayMs));
       }
 
-      // Obtener estado más reciente
-      const freshSession = await gameSessionsService.getCurrentSession();
+      // Obtener estado más reciente de la sesión específica
+      const freshSession = await gameSessionsService.getSessionById(sessionId);
 
       // Verificar que todas las preguntas han sido respondidas
       if (freshSession.current_question >= freshSession.total_questions) {
         // Intentar completar con la sesión fresca
-        const completedSession = await gameSessionsService.completeSession(
-          freshSession.session_id
-        );
+        const completedSession = await gameSessionsService.completeSession(sessionId);
         return completedSession;
       } else {
         // Si aún no se han respondido todas las preguntas, esperar más

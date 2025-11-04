@@ -41,6 +41,8 @@ export default function PlayPage() {
     resetToTypeSelection,
     handleResumeSession,
     viewInProgressSessions,
+    canAdvance,
+    countdown,
   } = useGameSession(refreshUser, user?.id);
 
   useEffect(() => {
@@ -214,8 +216,16 @@ export default function PlayPage() {
                   {loading ? 'Completando...' : 'Ver Resultados'}
                 </button>
               ) : (
-                <button onClick={handleNextQuestion} className={styles.nextButton} disabled={loading}>
-                  Siguiente Pregunta →
+                <button 
+                  onClick={handleNextQuestion} 
+                  className={styles.nextButton} 
+                  disabled={loading || !canAdvance}
+                >
+                  {!canAdvance && countdown > 0 
+                    ? `Espera ${countdown} segundos...` 
+                    : !canAdvance 
+                    ? 'Cargando...' 
+                    : 'Siguiente Pregunta →'}
                 </button>
               )}
             </div>
