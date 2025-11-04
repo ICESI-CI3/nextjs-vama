@@ -322,3 +322,22 @@
     border: 1px solid #4a5568;
   }
 }
+
+.smallButton,
+.smallLogout {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.smallButton {
+  background: #667eea;
+  color: white;
+}
+
+.smallButton:hover {
+  background: #5568d3;
+}

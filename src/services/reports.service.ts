@@ -1,39 +1,34 @@
 import apiClient from '@/lib/api-client';
+import { GeneralStats, TopPlayer, PopularTrivia } from '@/types/reports';
 
 function formatDate(date: Date) {
   return date.toISOString().split('T')[0]; // YYYY-MM-DD
 }
 
-export async function getGeneralStats() {
-  const today = new Date();
-  const start_date = `${today.getFullYear()}-01-01`;
-  const end_date = formatDate(today); 
-
-
-  const res = await apiClient.get('/reports/general-stats', {
-    params: { start_date, end_date },
-  });
-  return res.data.data; 
+// Devuelve datos tipados de GeneralStats
+export async function getGeneralStats(): Promise<GeneralStats> {
+  const res = await apiClient.get<{ data: GeneralStats }>('/reports/general-stats');
+  return res.data.data;
 }
 
-export async function getTopPlayers(limit = 10) {
-  const today = new Date();
-  const start_date = `${today.getFullYear()}-01-01`;
-  const end_date = formatDate(today); 
-
+// Devuelve un array tipado de TopPlayer
+export async function getTopPlayers(limit?: number) {
   const res = await apiClient.get('/reports/top-players', {
-    params: { start_date, end_date, limit },
+    params: { limit: limit ?? 0 }, // 0 o undefined para que el backend devuelva todos
   });
-  return res.data.data; 
+  return res.data.data;
 }
 
-export async function getPopularTrivias(limit = 10) {
+
+// Devuelve un array tipado de PopularTrivia
+export async function getPopularTrivias(limit = 10): Promise<PopularTrivia[]> {
   const today = new Date();
   const start_date = `${today.getFullYear()}-01-01`;
-  const end_date = formatDate(today); 
+  const end_date = formatDate(today);
 
-  const res = await apiClient.get('/reports/popular-trivias', {
+  const res = await apiClient.get<{ data: PopularTrivia[] }>('/reports/popular-trivias', {
     params: { start_date, end_date, limit },
   });
-  return res.data.data; 
+
+  return res.data.data;
 }
