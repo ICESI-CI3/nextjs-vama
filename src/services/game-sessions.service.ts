@@ -12,8 +12,23 @@ class GameSessionsService {
    * Crear una nueva sesión de juego
    */
   async createSession(dto: CreateGameSessionDto): Promise<GameSession> {
+    console.log('🎮 Creando sesión de juego para trivia:', dto.trivia_id);
     const response = await apiClient.post('/game-sessions', dto);
-    return response.data.data;
+    const session = response.data.data;
+    
+    console.log('📊 Sesión creada:', {
+      session_id: session.session_id,
+      trivia_id: session.trivia_id,
+      total_questions: session.total_questions,
+      current_question: session.current_question,
+    });
+    
+    // ADVERTENCIA: Si el backend devuelve más preguntas de las que realmente existen
+    if (session.total_questions > 20) {
+      console.warn(`⚠️ ADVERTENCIA: El backend dice que hay ${session.total_questions} preguntas. Esto parece incorrecto.`);
+    }
+    
+    return session;
   }
 
   /**
@@ -28,6 +43,8 @@ class GameSessionsService {
    * Obtener una pregunta específica por número
    */
   async getQuestion(sessionId: string, questionNumber: number): Promise<Question> {
+    console.log(`❓ Obteniendo pregunta ${questionNumber} para sesión ${sessionId}`);
+    
     const response = await apiClient.get(
       `/game-sessions/${sessionId}/questions/${questionNumber}`
     );
@@ -35,8 +52,7 @@ class GameSessionsService {
     // Necesitamos extraer solo la pregunta y ajustar la estructura
     const backendData = response.data.data;
     if (backendData.question) {
-      // Mapear la estructura del backend a nuestro tipo Question
-      return {
+      const question = {
         question_id: backendData.question.question_id,
         order: backendData.question_number,
         question_text: backendData.question.question_text,
@@ -44,6 +60,14 @@ class GameSessionsService {
         points_value: backendData.question.points_value,
         options: backendData.question.options || [],
       };
+      
+      console.log(`✅ Pregunta ${questionNumber} obtenida:`, {
+        question_id: question.question_id,
+        question_text: question.question_text.substring(0, 50) + '...',
+        options_count: question.options.length,
+      });
+      
+      return question;
     }
     // Si no está en el formato esperado, intentar retornar directamente
     return response.data.data.question || response.data;

@@ -43,6 +43,20 @@ apiClient.interceptors.response.use(
         }
       }
     }
+    
+    // Silenciar errores 404/500 esperados de endpoints no implementados
+    const url = error.config?.url || '';
+    const status = error.response?.status;
+    
+    if ((status === 404 || status === 500) && (
+      url.includes('/my-trivias') ||
+      url.includes('/questions') ||
+      url.includes('/publish') ||
+      url.includes('/archive')
+    )) {
+      console.warn(`⚠️ Endpoint no disponible en backend: ${url} (${status})`);
+    }
+    
     return Promise.reject(error);
   }
 );

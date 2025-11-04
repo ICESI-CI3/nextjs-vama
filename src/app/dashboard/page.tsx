@@ -132,7 +132,7 @@ export default function DashboardPage() {
             <p>Ver y editar tu información personal</p>
           </button>
 
-          <button className={styles.actionCard} onClick={() => {}}>
+          <button className={styles.actionCard} onClick={() => router.push('/my-trivias')}>
             <div className={styles.actionIcon}>📝</div>
             <h3>Mis Trivias</h3>
             <p>Gestiona las trivias que has creado</p>
