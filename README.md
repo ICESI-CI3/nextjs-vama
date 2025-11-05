@@ -1,4 +1,4 @@
-# 🎮 TriviaTime - Plataforma de Trivia Gamificada
+# TriviaTime - Plataforma de Trivia Gamificada
 
 ![Next.js](https://img.shields.io/badge/Next.js-14.0.0-black)
 ![React](https://img.shields.io/badge/React-18.2.0-blue)
@@ -9,65 +9,65 @@ Plataforma web de trivias gamificadas desarrollada con **Next.js 14**, **TypeScr
 
 ---
 
-## 📋 Tabla de Contenidos
+## Tabla de Contenidos
 
-1. [Características](#-características)
-2. [Tecnologías](#️-tecnologías)
-3. [Requisitos Previos](#-requisitos-previos)
-4. [Instalación](#-instalación)
-5. [Configuración](#️-configuración)
-6. [Ejecutar la Aplicación](#-ejecutar-la-aplicación)
-7. [Probar Funcionalidades](#-probar-funcionalidades)
-8. [Testing](#-testing)
-9. [Estructura del Proyecto](#-estructura-del-proyecto)
-10. [Scripts Disponibles](#-scripts-disponibles)
-11. [Usuarios de Prueba](#-usuarios-de-prueba)
-12. [API Endpoints](#-api-endpoints)
-13. [Troubleshooting](#-troubleshooting)
-14. [Documentación Adicional](#-documentación-adicional)
+1. [Características](#características)
+2. [Tecnologías](#tecnologías)
+3. [Requisitos Previos](#requisitos-previos)
+4. [Instalación](#instalación)
+5. [Configuración](#configuración)
+6. [Ejecutar la Aplicación](#ejecutar-la-aplicación)
+7. [Probar Funcionalidades](#probar-funcionalidades)
+8. [Testing](#testing)
+9. [Estructura del Proyecto](#estructura-del-proyecto)
+10. [Scripts Disponibles](#scripts-disponibles)
+11. [Usuarios de Prueba](#usuarios-de-prueba)
+12. [API Endpoints](#api-endpoints)
+13. [Troubleshooting](#troubleshooting)
+14. [Documentación Adicional](#documentación-adicional)
 
 ---
 
-## ✨ Características
+## Características
 
 ### Autenticación y Autorización
-- ✅ **Autenticación JWT completa** (Login, Registro, Logout)
-- ✅ **Autorización basada en roles (RBAC)**: Player y Admin
-- ✅ **Protección de rutas** con redirección automática
-- ✅ **Persistencia de sesión** con localStorage
-- ✅ **Manejo automático de tokens** con interceptores Axios
+- **Autenticación JWT completa** (Login, Registro, Logout)
+- **Autorización basada en roles (RBAC)**: Player y Admin
+- **Protección de rutas** con redirección automática
+- **Persistencia de sesión** con localStorage
+- **Manejo automático de tokens** con interceptores Axios
 
 ### Gestión de Estado
-- ✅ **Zustand** para state management (10% del proyecto)
-- ✅ **Persistencia automática** en localStorage
-- ✅ **Rehidratación inteligente** al recargar la página
-- ✅ **Type-safe** con TypeScript completo
+- **Zustand** para state management (10% del proyecto)
+- **Persistencia automática** en localStorage
+- **Rehidratación inteligente** al recargar la página
+- **Type-safe** con TypeScript completo
 
 ### Funcionalidades de Usuario (Player)
-- ✅ Dashboard personalizado
-- ✅ Jugar trivias (propias o de OpenTDB API)
-- ✅ Ver rankings globales y por categoría
-- ✅ Historial de sesiones de juego
-- ✅ Editar perfil personal
-- ✅ Crear, editar y gestionar trivias propias
-- ✅ Agregar preguntas a trivias (múltiple opción y verdadero/falso)
+- Dashboard personalizado
+- Jugar trivias (propias o de OpenTDB API)
+- Ver rankings globales y por categoría
+- Historial de sesiones de juego
+- Editar perfil personal
+- Crear, editar y gestionar trivias propias
+- Agregar preguntas a trivias (múltiple opción y verdadero/falso)
 
 ### Funcionalidades de Admin
-- ✅ Dashboard de administrador
-- ✅ Gestión de usuarios (activar/desactivar, cambiar roles)
-- ✅ Reportes y estadísticas generales
-- ✅ Todas las funcionalidades de Player
+- Dashboard de administrador
+- Gestión de usuarios (activar/desactivar, cambiar roles)
+- Reportes y estadísticas generales
+- Todas las funcionalidades de Player
 
 ### Otras Características
-- ✅ Integración con **OpenTDB API** (base de datos de trivias externa)
-- ✅ Sistema de puntuación y rankings
-- ✅ Gráficos y visualización de datos con Recharts
-- ✅ Responsive design con CSS Modules
-- ✅ Testing completo (Unit + Integration + E2E)
+- Integración con **OpenTDB API** (base de datos de trivias externa)
+- Sistema de puntuación y rankings
+- Gráficos y visualización de datos con Recharts
+- Responsive design con CSS Modules
+- Testing completo (Unit + Integration + E2E)
 
 ---
 
-## 🛠️ Tecnologías
+## Tecnologías
 
 | Tecnología | Versión | Propósito |
 |------------|---------|-----------|
@@ -82,7 +82,7 @@ Plataforma web de trivias gamificadas desarrollada con **Next.js 14**, **TypeScr
 
 ---
 
-## 📦 Requisitos Previos
+## Requisitos Previos
 
 Antes de comenzar, asegúrate de tener instalado:
 
@@ -99,7 +99,7 @@ npm --version    # Debe mostrar 9.x o superior
 
 ---
 
-## 🚀 Instalación
+## Instalación
 
 ### Paso 1: Clonar el Repositorio
 
@@ -124,7 +124,7 @@ npm install --force
 
 ---
 
-## ⚙️ Configuración
+## Configuración
 
 ### Configurar Variables de Entorno
 
@@ -139,7 +139,7 @@ NEXT_PUBLIC_API_URL=https://nestjs-vama-production.up.railway.app/api
 
 ---
 
-## ▶️ Ejecutar la Aplicación
+## Ejecutar la Aplicación
 
 ### Modo Desarrollo
 
@@ -148,8 +148,8 @@ npm run dev
 ```
 
 La aplicación estará disponible en:
-- 🌐 **URL**: http://localhost:3000
-- 🔄 **Hot Reload**: Habilitado (cambios se reflejan automáticamente)
+- **URL**: http://localhost:3000
+- **Hot Reload**: Habilitado (cambios se reflejan automáticamente)
 
 ### Modo Producción
 
@@ -162,18 +162,18 @@ npm run start
 ```
 
 La aplicación estará disponible en:
-- 🌐 **URL**: http://localhost:3000
-- ⚡ **Optimizado**: Build optimizado para producción
+- **URL**: http://localhost:3000
+- **Optimizado**: Build optimizado para producción
 
 ---
 
-## 🧪 Probar Funcionalidades
+## Probar Funcionalidades
 
 A continuación, una guía paso a paso para probar todas las funcionalidades de la aplicación.
 
 ---
 
-### 1️⃣ **Registro de Usuario**
+### 1. Registro de Usuario
 
 #### Pasos:
 1. Abre tu navegador en http://localhost:3000
@@ -186,19 +186,19 @@ A continuación, una guía paso a paso para probar todas las funcionalidades de 
 5. Click en **"Registrarse"**
 
 #### Resultado Esperado:
-- ✅ Usuario creado exitosamente
-- ✅ Auto-login automático
-- ✅ Redirección a `/dashboard` (rol: player por defecto)
-- ✅ Mensaje de bienvenida con tu nombre
+- Usuario creado exitosamente
+- Auto-login automático
+- Redirección a `/dashboard` (rol: player por defecto)
+- Mensaje de bienvenida con tu nombre
 
 #### Validaciones:
-- ❌ Email duplicado: "El usuario ya existe"
-- ❌ Email inválido: "Formato de email inválido"
-- ❌ Contraseña muy corta: "Mínimo 6 caracteres"
+- Email duplicado: "El usuario ya existe"
+- Email inválido: "Formato de email inválido"
+- Contraseña muy corta: "Mínimo 6 caracteres"
 
 ---
 
-### 2️⃣ **Inicio de Sesión**
+### 2. Inicio de Sesión
 
 #### Pasos:
 1. En `/auth/login`, ingresa credenciales:
@@ -207,19 +207,19 @@ A continuación, una guía paso a paso para probar todas las funcionalidades de 
 2. Click en **"Iniciar Sesión"**
 
 #### Resultado Esperado:
-- ✅ Login exitoso
-- ✅ Token JWT guardado en localStorage
-- ✅ Usuario guardado en Zustand store
-- ✅ Redirección según rol:
+- Login exitoso
+- Token JWT guardado en localStorage
+- Usuario guardado en Zustand store
+- Redirección según rol:
   - **Player** → `/dashboard`
   - **Admin** → `/admin/dashboard`
 
 #### Credenciales de Prueba:
-Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
+Ver sección [Usuarios de Prueba](#usuarios-de-prueba)
 
 ---
 
-### 3️⃣ **Dashboard de Usuario (Player)**
+### 3. Dashboard de Usuario (Player)
 
 #### Pasos:
 1. Inicia sesión como player: `test@test.com` / `test123`
@@ -228,9 +228,9 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
 #### Funcionalidades Disponibles:
 
 ##### A. Ver Información Personal
-- ✅ Nombre de usuario
-- ✅ Puntuación total
-- ✅ Rol actual
+- Nombre de usuario
+- Puntuación total
+- Rol actual
 
 ##### B. Editar Perfil
 1. Click en **"Mi Perfil"**
@@ -241,19 +241,19 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
 3. Click en **"Guardar"**
 
 **Resultado**: 
-- ✅ Perfil actualizado
-- ✅ Store de Zustand actualizado
-- ✅ Cambios visibles en el header
+- Perfil actualizado
+- Store de Zustand actualizado
+- Cambios visibles en el header
 
 ##### C. Navegación
-- 🎮 **Jugar Trivias** → `/play`
-- 📊 **Mis Sesiones** → `/game-sessions`
-- 🏆 **Rankings** → `/rankings`
-- 📝 **Mis Trivias** → `/my-trivias`
+- **Jugar Trivias** → `/play`
+- **Mis Sesiones** → `/game-sessions`
+- **Rankings** → `/rankings`
+- **Mis Trivias** → `/my-trivias`
 
 ---
 
-### 4️⃣ **Crear y Gestionar Trivias**
+### 4. Crear y Gestionar Trivias
 
 #### A. Crear Nueva Trivia
 
@@ -268,9 +268,9 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
 4. Click en **"Crear"**
 
 ##### Resultado Esperado:
-- ✅ Trivia creada con `status: "draft"`
-- ✅ Redirección automática a `/my-trivias/[id]/edit`
-- ✅ Mensaje de éxito
+- Trivia creada con `status: "draft"`
+- Redirección automática a `/my-trivias/[id]/edit`
+- Mensaje de éxito
 
 #### B. Agregar Preguntas a la Trivia
 
@@ -282,7 +282,7 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
    - **Texto**: "¿Cuál es la capital de Francia?"
    - **Tipo**: Opción Múltiple
    - **Opciones**:
-     - Opción 1: "París" ✅ (marca como correcta)
+     - Opción 1: "París" (marca como correcta)
      - Opción 2: "Londres"
      - Opción 3: "Berlín"
      - Opción 4: "Madrid"
@@ -291,16 +291,16 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
    **Opción B: Pregunta Verdadero/Falso**
    - **Texto**: "¿La Tierra es plana?"
    - **Tipo**: Verdadero/Falso
-   - **Respuesta correcta**: Falso ✅
+   - **Respuesta correcta**: Falso
    - **Puntos**: 5
 
 3. Click en **"Guardar Pregunta"**
 
 ##### Resultado Esperado:
-- ✅ Pregunta creada en el backend
-- ✅ Aparece inmediatamente en la lista (actualización optimista)
-- ✅ Se puede editar o eliminar
-- ✅ Se muestra el conteo de preguntas actualizado
+- Pregunta creada en el backend
+- Aparece inmediatamente en la lista (actualización optimista)
+- Se puede editar o eliminar
+- Se muestra el conteo de preguntas actualizado
 
 #### C. Editar Pregunta
 
@@ -310,8 +310,8 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
 3. Click en **"Guardar Cambios"**
 
 ##### Resultado Esperado:
-- ✅ Pregunta actualizada
-- ✅ Cambios visibles inmediatamente
+- Pregunta actualizada
+- Cambios visibles inmediatamente
 
 #### D. Eliminar Pregunta
 
@@ -320,8 +320,8 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
 2. Confirma la eliminación
 
 ##### Resultado Esperado:
-- ✅ Pregunta eliminada del backend
-- ✅ Desaparece de la lista
+- Pregunta eliminada del backend
+- Desaparece de la lista
 
 #### E. Publicar Trivia
 
@@ -331,9 +331,9 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
 3. Confirma la acción
 
 ##### Resultado Esperado:
-- ✅ `status` cambia de "draft" a "published"
-- ✅ Trivia disponible para jugar
-- ✅ Botón cambia a **"Archivar"**
+- `status` cambia de "draft" a "published"
+- Trivia disponible para jugar
+- Botón cambia a **"Archivar"**
 
 #### F. Filtrar y Buscar Trivias
 
@@ -345,12 +345,12 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
    - **Filtrar por estado**: Draft/Published/Archived
 
 ##### Resultado Esperado:
-- ✅ Lista actualizada dinámicamente
-- ✅ Filtros combinables
+- Lista actualizada dinámicamente
+- Filtros combinables
 
 ---
 
-### 5️⃣ **Jugar Trivias**
+### 5. Jugar Trivias
 
 #### A. Seleccionar Tipo de Juego
 
@@ -369,8 +369,8 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
      - Número de preguntas (5-50)
 
 ##### Resultado Esperado:
-- ✅ Lista de trivias disponibles
-- ✅ Información de cada trivia (título, categoría, dificultad)
+- Lista de trivias disponibles
+- Información de cada trivia (título, categoría, dificultad)
 
 #### B. Iniciar Sesión de Juego
 
@@ -380,10 +380,10 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
 3. Se crea una sesión de juego
 
 ##### Resultado Esperado:
-- ✅ Sesión creada en el backend
-- ✅ Primera pregunta mostrada
-- ✅ Timer iniciado (si hay límite de tiempo)
-- ✅ Contador de progreso: "Pregunta 1 de X"
+- Sesión creada en el backend
+- Primera pregunta mostrada
+- Timer iniciado (si hay límite de tiempo)
+- Contador de progreso: "Pregunta 1 de X"
 
 #### C. Responder Preguntas
 
@@ -393,11 +393,11 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
 3. Click en **"Enviar Respuesta"**
 
 ##### Resultado Esperado:
-- ✅ Feedback inmediato:
-  - ✅ **Correcto**: Mensaje verde + puntos ganados
-  - ❌ **Incorrecto**: Mensaje rojo + respuesta correcta mostrada
-- ✅ Botón **"Siguiente Pregunta"** habilitado
-- ✅ Progreso actualizado
+- Feedback inmediato:
+  - **Correcto**: Mensaje verde + puntos ganados
+  - **Incorrecto**: Mensaje rojo + respuesta correcta mostrada
+- Botón **"Siguiente Pregunta"** habilitado
+- Progreso actualizado
 
 #### D. Finalizar Sesión
 
@@ -406,13 +406,13 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
 2. Última pregunta automáticamente finaliza la sesión
 
 ##### Resultado Esperado:
-- ✅ Pantalla de resultados:
+- Pantalla de resultados:
   - Total de preguntas
   - Preguntas correctas
   - Puntuación total
   - Tiempo total
   - Promedio por pregunta
-- ✅ Opciones:
+- Opciones:
   - Ver respuestas detalladas
   - Jugar de nuevo
   - Volver al dashboard
@@ -425,12 +425,12 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
 2. Click en la sesión que quieres continuar
 
 ##### Resultado Esperado:
-- ✅ Sesión reanudada desde la última pregunta
-- ✅ Progreso conservado
+- Sesión reanudada desde la última pregunta
+- Progreso conservado
 
 ---
 
-### 6️⃣ **Ver Historial de Sesiones**
+### 6. Ver Historial de Sesiones
 
 #### Pasos:
 1. Desde `/dashboard`, click en **"Mis Sesiones"**
@@ -457,12 +457,12 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
    - Tiempo por pregunta
 
 ##### Resultado Esperado:
-- ✅ Historial completo visible
-- ✅ Estadísticas personales
+- Historial completo visible
+- Estadísticas personales
 
 ---
 
-### 7️⃣ **Ver Rankings**
+### 7. Ver Rankings
 
 #### Pasos:
 1. Desde `/dashboard`, click en **"Rankings"**
@@ -487,13 +487,13 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
 - Comparación entre jugadores
 
 ##### Resultado Esperado:
-- ✅ Rankings actualizados
-- ✅ Tu posición resaltada
-- ✅ Visualización clara con gráficos
+- Rankings actualizados
+- Tu posición resaltada
+- Visualización clara con gráficos
 
 ---
 
-### 8️⃣ **Dashboard de Administrador**
+### 8. Dashboard de Administrador
 
 > **Nota**: Necesitas iniciar sesión como admin.
 
@@ -511,8 +511,8 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
 ##### A. Gestión de Usuarios
 
 ###### Ver Lista de Usuarios
-- ✅ Todos los usuarios del sistema
-- ✅ Información: nombre, email, rol, estado, puntuación
+- Todos los usuarios del sistema
+- Información: nombre, email, rol, estado, puntuación
 
 ###### Cambiar Rol de Usuario
 1. Selecciona un usuario
@@ -521,16 +521,16 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
 4. Confirma
 
 **Resultado**:
-- ✅ Rol actualizado en el backend
-- ✅ Usuario recibe nuevos permisos
+- Rol actualizado en el backend
+- Usuario recibe nuevos permisos
 
 ###### Activar/Desactivar Usuario
 1. Selecciona un usuario
 2. Click en **"Desactivar"** o **"Activar"**
 
 **Resultado**:
-- ✅ Usuario desactivado no puede iniciar sesión
-- ✅ Usuario activado puede iniciar sesión
+- Usuario desactivado no puede iniciar sesión
+- Usuario activado puede iniciar sesión
 
 ##### B. Ver Reportes
 
@@ -552,29 +552,29 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
 3. Se descarga en formato CSV/JSON
 
 ##### Resultado Esperado:
-- ✅ Reportes detallados y actualizados
-- ✅ Gráficos interactivos
-- ✅ Datos exportables
+- Reportes detallados y actualizados
+- Gráficos interactivos
+- Datos exportables
 
 ---
 
-### 9️⃣ **Cerrar Sesión**
+### 9. Cerrar Sesión
 
 #### Pasos:
 1. Click en **"Cerrar Sesión"** (en header)
 
 #### Resultado Esperado:
-- ✅ Token eliminado de localStorage
-- ✅ Usuario eliminado de localStorage
-- ✅ Zustand store limpiado:
+- Token eliminado de localStorage
+- Usuario eliminado de localStorage
+- Zustand store limpiado:
   - `user = null`
   - `isAuthenticated = false`
-- ✅ Redirección a `/auth/login`
-- ✅ No se puede acceder a rutas protegidas
+- Redirección a `/auth/login`
+- No se puede acceder a rutas protegidas
 
 ---
 
-### 🔟 **Probar Protección de Rutas**
+### 10. Probar Protección de Rutas
 
 #### Escenario A: Usuario No Autenticado
 
@@ -586,8 +586,8 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
    - http://localhost:3000/admin/dashboard
 
 ##### Resultado Esperado:
-- ✅ Redirección automática a `/auth/login`
-- ✅ No se puede acceder sin autenticación
+- Redirección automática a `/auth/login`
+- No se puede acceder sin autenticación
 
 #### Escenario B: Player Intentando Acceder a Admin
 
@@ -596,25 +596,25 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
 2. Intenta acceder a: http://localhost:3000/admin/dashboard
 
 ##### Resultado Esperado:
-- ✅ Redirección automática a `/dashboard` (su dashboard)
-- ✅ No se puede acceder a rutas de admin
+- Redirección automática a `/dashboard` (su dashboard)
+- No se puede acceder a rutas de admin
 
 #### Escenario C: Admin Puede Acceder a Todo
 
 ##### Pasos:
 1. Inicia sesión como admin: `admin@test.com` / `admin123`
 2. Accede a:
-   - `/admin/dashboard` ✅
-   - `/dashboard` ✅
-   - `/my-trivias` ✅
+   - `/admin/dashboard`
+   - `/dashboard`
+   - `/my-trivias`
 
 ##### Resultado Esperado:
-- ✅ Admin puede acceder a todas las rutas
-- ✅ Dashboard por defecto es `/admin/dashboard`
+- Admin puede acceder a todas las rutas
+- Dashboard por defecto es `/admin/dashboard`
 
 ---
 
-### 1️⃣1️⃣ **Probar Persistencia de Sesión**
+### 11. Probar Persistencia de Sesión
 
 #### Escenario: Recargar Página
 
@@ -624,10 +624,10 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
 3. **Recarga la página** (F5 o Ctrl+R)
 
 ##### Resultado Esperado:
-- ✅ Sesión mantenida
-- ✅ Usuario aún autenticado
-- ✅ No redirección a login
-- ✅ Zustand rehidrata el estado desde localStorage
+- Sesión mantenida
+- Usuario aún autenticado
+- No redirección a login
+- Zustand rehidrata el estado desde localStorage
 
 #### Escenario: Cerrar y Abrir Navegador
 
@@ -637,8 +637,8 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
 3. Abre de nuevo y ve a http://localhost:3000
 
 ##### Resultado Esperado:
-- ✅ Sesión mantenida (si el token no expiró)
-- ✅ Redirección al dashboard correspondiente
+- Sesión mantenida (si el token no expiró)
+- Redirección al dashboard correspondiente
 
 #### Escenario: Token Expirado
 
@@ -647,15 +647,15 @@ Ver sección [Usuarios de Prueba](#-usuarios-de-prueba)
 2. Intenta hacer una petición (ej: ver trivias)
 
 ##### Resultado Esperado:
-- ✅ Backend retorna 401
-- ✅ Interceptor detecta 401
-- ✅ Auto-logout automático
-- ✅ Limpieza de localStorage
-- ✅ Redirección a `/auth/login`
+- Backend retorna 401
+- Interceptor detecta 401
+- Auto-logout automático
+- Limpieza de localStorage
+- Redirección a `/auth/login`
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ### Ejecutar Tests Unitarios
 
@@ -671,14 +671,14 @@ npm run test:coverage
 ```
 
 #### Tests Incluidos:
-- ✅ `authStore.test.ts`: Store de Zustand
-- ✅ `useAuth.test.tsx`: Hook de autenticación
-- ✅ `auth.service.test.ts`: Servicio de auth
-- ✅ `api-client.test.ts`: Cliente Axios
-- ✅ `trivias.service.test.ts`: Servicio de trivias
-- ✅ `questions.service.test.ts`: Servicio de preguntas
-- ✅ `CreateTriviaModal.test.tsx`: Componente de crear trivia
-- ✅ `TriviaCard.test.tsx`: Componente de tarjeta
+- `authStore.test.ts`: Store de Zustand
+- `useAuth.test.tsx`: Hook de autenticación
+- `auth.service.test.ts`: Servicio de auth
+- `api-client.test.ts`: Cliente Axios
+- `trivias.service.test.ts`: Servicio de trivias
+- `questions.service.test.ts`: Servicio de preguntas
+- `CreateTriviaModal.test.tsx`: Componente de crear trivia
+- `TriviaCard.test.tsx`: Componente de tarjeta
 
 ### Ejecutar Tests E2E
 
@@ -694,15 +694,15 @@ npm run test:e2e:report
 ```
 
 #### Tests E2E Incluidos:
-- ✅ Login completo
-- ✅ Registro de usuario
-- ✅ Navegación protegida
-- ✅ Crear trivia
-- ✅ Jugar trivia
+- Login completo
+- Registro de usuario
+- Navegación protegida
+- Crear trivia
+- Jugar trivia
 
 ---
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 nextjs-vama/
@@ -755,7 +755,7 @@ nextjs-vama/
 
 ---
 
-## 📜 Scripts Disponibles
+## Scripts Disponibles
 
 | Script | Comando | Descripción |
 |--------|---------|-------------|
@@ -772,7 +772,7 @@ nextjs-vama/
 
 ---
 
-## 👥 Usuarios de Prueba
+## Usuarios de Prueba
 
 El backend tiene usuarios pre-creados para pruebas:
 
@@ -785,13 +785,13 @@ El backend tiene usuarios pre-creados para pruebas:
 | player2@test.com | player123 | player |
 
 **Permisos**:
-- ✅ Jugar trivias
-- ✅ Crear trivias propias
-- ✅ Ver rankings
-- ✅ Ver historial de sesiones
-- ✅ Editar perfil personal
-- ❌ No puede acceder a dashboard admin
-- ❌ No puede gestionar usuarios
+- Jugar trivias
+- Crear trivias propias
+- Ver rankings
+- Ver historial de sesiones
+- Editar perfil personal
+- No puede acceder a dashboard admin
+- No puede gestionar usuarios
 
 ### Admin (Administrador)
 
@@ -800,17 +800,17 @@ El backend tiene usuarios pre-creados para pruebas:
 | admin@test.com | admin123 | admin |
 
 **Permisos**:
-- ✅ Todo lo que puede hacer un player
-- ✅ Acceder a dashboard admin
-- ✅ Gestionar usuarios (activar/desactivar, cambiar roles)
-- ✅ Ver reportes y estadísticas
-- ✅ Moderar trivias
+- Todo lo que puede hacer un player
+- Acceder a dashboard admin
+- Gestionar usuarios (activar/desactivar, cambiar roles)
+- Ver reportes y estadísticas
+- Moderar trivias
 
 > **Nota**: Puedes crear nuevos usuarios con el formulario de registro. Por defecto, todos los nuevos usuarios tienen rol `player`.
 
 ---
 
-## 🔌 API Endpoints
+## API Endpoints
 
 ### Backend Base URL
 
@@ -879,7 +879,7 @@ GET    /reports/activity                     - Reporte de actividad
 
 ---
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Problema: `npm install` falla con conflictos
 
@@ -987,7 +987,7 @@ npm run test
 
 ---
 
-## 📚 Documentación Adicional
+## Documentación Adicional
 
 ### Documentos Disponibles
 
@@ -1008,7 +1008,7 @@ npm run test
 
 ---
 
-## 🎯 Checklist de Pruebas Completas
+## Checklist de Pruebas Completas
 
 Usa esta checklist para verificar todas las funcionalidades:
 
@@ -1074,7 +1074,7 @@ Usa esta checklist para verificar todas las funcionalidades:
 
 ---
 
-## 🚀 Deploy
+## Deploy
 
 ### Vercel (Recomendado)
 
@@ -1098,15 +1098,15 @@ netlify deploy --prod --dir=.next
 
 ---
 
-## 📝 Notas Importantes
+## Notas Importantes
 
 ### Limitaciones Conocidas del Backend
 
 El backend tiene algunos endpoints no implementados o con errores:
 
-1. ❌ `/trivias/my-trivias` → 500 (fallback automático a `/trivias`)
-2. ❌ `/trivias/:id/questions` → 404 (actualización optimista en frontend)
-3. ❌ `/trivias/:id/publish` → 404 (fallback a PATCH `/trivias/:id`)
+1. `/trivias/my-trivias` → 500 (fallback automático a `/trivias`)
+2. `/trivias/:id/questions` → 404 (actualización optimista en frontend)
+3. `/trivias/:id/publish` → 404 (fallback a PATCH `/trivias/:id`)
 
 **Solución**: El frontend implementa **fallbacks automáticos** y **resiliencia** para manejar estos casos.
 
@@ -1122,7 +1122,7 @@ El backend tiene algunos endpoints no implementados o con errores:
 
 ---
 
-## 👨‍💻 Desarrollo
+## Desarrollo
 
 ### Contribuir
 
@@ -1141,13 +1141,13 @@ El backend tiene algunos endpoints no implementados o con errores:
 
 ---
 
-## 📄 Licencia
+## Licencia
 
 Este proyecto es de uso académico.
 
 ---
 
-## 🙏 Créditos
+## Créditos
 
 - **Framework**: Next.js
 - **State Management**: Zustand
@@ -1157,7 +1157,7 @@ Este proyecto es de uso académico.
 
 ---
 
-## 📧 Contacto
+## Contacto
 
 **Equipo de Desarrollo**: TriviaTime  
 **Fecha**: Noviembre 2025  
@@ -1165,6 +1165,6 @@ Este proyecto es de uso académico.
 
 ---
 
-**¡Gracias por usar TriviaTime! 🎮🎉**
+**Gracias por usar TriviaTime!**
 
-Si encuentras algún problema o tienes sugerencias, por favor abre un issue en el repositorio.
+
