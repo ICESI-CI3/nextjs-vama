@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/components/Toast/ToastContainer';
 import { triviasService } from '@/services/trivias.service';
 import { categoriesService } from '@/services/categories.service';
 import { Trivia, Category } from '@/types/game';
@@ -13,6 +14,7 @@ import styles from './my-trivias.module.css';
 export default function MyTriviasPage() {
   const router = useRouter();
   const { user, isAuthenticated, isLoading: authLoading, logout } = useAuth();
+  const toast = useToast();
   
   const [trivias, setTrivias] = useState<Trivia[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -90,8 +92,9 @@ export default function MyTriviasPage() {
     try {
       await triviasService.deleteTrivia(triviaId);
       loadData();
+      toast.success('Trivia eliminada exitosamente');
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Error al eliminar la trivia');
+      toast.error(err.response?.data?.message || 'Error al eliminar la trivia');
     }
   };
 
@@ -99,8 +102,9 @@ export default function MyTriviasPage() {
     try {
       await triviasService.publishTrivia(triviaId);
       loadData();
+      toast.success('¡Trivia publicada exitosamente!');
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Error al publicar la trivia');
+      toast.error(err.response?.data?.message || 'Error al publicar la trivia');
     }
   };
 
@@ -108,8 +112,9 @@ export default function MyTriviasPage() {
     try {
       await triviasService.archiveTrivia(triviaId);
       loadData();
+      toast.success('Trivia archivada exitosamente');
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Error al archivar la trivia');
+      toast.error(err.response?.data?.message || 'Error al archivar la trivia');
     }
   };
 

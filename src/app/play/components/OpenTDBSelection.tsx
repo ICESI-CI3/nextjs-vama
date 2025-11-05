@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useToast } from '@/components/Toast/ToastContainer';
 import { validateOpenTDBForm } from '../utils/sessionHelpers';
 import { transformOpenTDBQuestions } from '../utils/questionHelpers';
 import styles from '../play.module.css';
@@ -16,6 +17,7 @@ export function OpenTDBSelection({
   onBack,
   loading,
 }: OpenTDBSelectionProps) {
+  const toast = useToast();
   const [categories, setCategories] = useState<any[]>([]);
   const [formData, setFormData] = useState({
     amount: 5,
@@ -51,7 +53,7 @@ export function OpenTDBSelection({
       setFormData(prev => ({ ...prev, amount: numAmount }));
       return numAmount;
     } catch (err: any) {
-      alert(err.message);
+      toast.error(err.message || 'Cantidad de preguntas inválida');
       return null;
     }
   };
@@ -107,7 +109,7 @@ export function OpenTDBSelection({
       onStartGame(trivia.id);
     } catch (err: any) {
       console.error('Error creating OpenTDB game:', err);
-      alert(err.response?.data?.message || 'Error al crear la trivia de OpenTDB');
+      toast.error(err.response?.data?.message || 'Error al crear la trivia de OpenTDB');
     } finally {
       setCreating(false);
     }

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/components/Toast/ToastContainer';
 import { usersService } from '@/services/users.service';
 import { User, UpdateUserDto, ChangeRoleDto } from '@/types/auth';
 import styles from './admin-dashboard.module.css';
@@ -10,6 +11,7 @@ import styles from './admin-dashboard.module.css';
 export default function AdminDashboard() {
   const router = useRouter();
   const { user, isAuthenticated, isLoading, logout } = useAuth();
+  const toast = useToast();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -54,8 +56,9 @@ export default function AdminDashboard() {
       await usersService.updateUser(id, dto);
       await loadUsers();
       setEditingUser(null);
+      toast.success('Usuario actualizado exitosamente');
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Error al actualizar usuario');
+      toast.error(err.response?.data?.message || 'Error al actualizar usuario');
     } finally {
       setActionLoading(null);
     }
@@ -69,8 +72,9 @@ export default function AdminDashboard() {
       setActionLoading(id);
       await usersService.deleteUser(id);
       await loadUsers();
+      toast.success('Usuario eliminado exitosamente');
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Error al eliminar usuario');
+      toast.error(err.response?.data?.message || 'Error al eliminar usuario');
     } finally {
       setActionLoading(null);
     }
@@ -79,14 +83,16 @@ export default function AdminDashboard() {
   const handleToggleActive = async (userToToggle: User) => {
     try {
       setActionLoading(userToToggle.id);
+      const wasActive = userToToggle.is_active;
       if (userToToggle.is_active) {
         await usersService.deactivateUser(userToToggle.id);
       } else {
         await usersService.activateUser(userToToggle.id);
       }
       await loadUsers();
+      toast.success(`Usuario ${wasActive ? 'desactivado' : 'activado'} exitosamente`);
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Error al cambiar estado del usuario');
+      toast.error(err.response?.data?.message || 'Error al cambiar estado del usuario');
     } finally {
       setActionLoading(null);
     }
@@ -98,8 +104,9 @@ export default function AdminDashboard() {
       await usersService.changeUserRole(id, { role });
       await loadUsers();
       setShowRoleModal(null);
+      toast.success('Rol actualizado exitosamente');
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Error al cambiar rol');
+      toast.error(err.response?.data?.message || 'Error al cambiar rol');
     } finally {
       setActionLoading(null);
     }

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/components/Toast/ToastContainer';
 import { triviasService, UpdateTriviaDto } from '@/services/trivias.service';
 import { questionsService, CreateQuestionDto } from '@/services/questions.service';
 import { categoriesService } from '@/services/categories.service';
@@ -16,6 +17,7 @@ export default function EditTriviaPage() {
   const params = useParams();
   const triviaId = params.id as string;
   const { user, isAuthenticated, isLoading: authLoading } = useAuth();
+  const toast = useToast();
 
   const [trivia, setTrivia] = useState<Trivia | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -92,8 +94,9 @@ export default function EditTriviaPage() {
       await triviasService.updateTrivia(trivia.id, triviaFormData);
       await loadData();
       setEditingTrivia(false);
+      toast.success('¡Trivia actualizada exitosamente!');
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Error al actualizar la trivia');
+      toast.error(err.response?.data?.message || 'Error al actualizar la trivia');
     } finally {
       setSaving(false);
     }
@@ -115,8 +118,9 @@ export default function EditTriviaPage() {
     try {
       await questionsService.deleteQuestion(questionId);
       await loadData();
+      toast.success('Pregunta eliminada exitosamente');
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Error al eliminar la pregunta');
+      toast.error(err.response?.data?.message || 'Error al eliminar la pregunta');
     }
   };
 
