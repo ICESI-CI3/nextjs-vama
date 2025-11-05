@@ -205,6 +205,11 @@ export default function EditTriviaPage() {
     );
   }
 
+  // Safety check: si no hay trivia en este punto, no renderizar
+  if (!trivia) {
+    return null;
+  }
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>

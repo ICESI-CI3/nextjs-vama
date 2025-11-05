@@ -22,28 +22,11 @@ export default function StatsPage() {
     setError('');
 
     try {
-      const [generalStatsRes, topPlayersRes, popularTriviasRes] = await Promise.all([
+      const [generalStats, topPlayersRes, popularTriviasRes] = await Promise.all([
         getGeneralStats(),
         getTopPlayers(10),
         getPopularTrivias(10),
       ]);
-
-      // Promedio puntaje seguro
-      const avgScore =
-        topPlayersRes.length > 0
-          ? topPlayersRes.reduce((sum: number, p: TopPlayer) => sum + (p.avg_score ?? 0), 0) /
-            topPlayersRes.length
-          : 0;
-
-      const generalStats: GeneralStats = {
-        totalUsers: generalStatsRes.total_users ?? 0,
-        totalTrivias: generalStatsRes.total_trivias ?? 0,
-        totalSessions: generalStatsRes.total_sessions ?? 0,
-        avgScore,
-        avgCompletionRate: generalStatsRes.completed_sessions
-          ? (generalStatsRes.completed_sessions / generalStatsRes.total_sessions) * 100
-          : 0,
-      };
 
       const topPlayers: TopPlayer[] = topPlayersRes.map((p) => ({
         user_id: p.user_id,

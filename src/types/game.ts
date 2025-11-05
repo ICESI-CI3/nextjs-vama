@@ -33,6 +33,7 @@ export interface Question {
   question_text: string;
   question_type: 'multiple_choice' | 'true_false';
   points_value: number;
+  correct_answer?: string;
   options: QuestionOption[];
 }
 

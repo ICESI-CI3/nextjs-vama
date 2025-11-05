@@ -3,8 +3,10 @@ import { Ranking, UserRanking } from '@/types/ranking';
 
 class RankingsService {
  
-  async getGlobalRanking(): Promise<Ranking[]> {
-    const response = await apiClient.get('/rankings/global');
+  async getGlobalRanking(page = 1, limit = 20): Promise<Ranking[]> {
+    const response = await apiClient.get('/rankings/global', {
+      params: { page, limit },
+    });
     return response.data;
   }
 
